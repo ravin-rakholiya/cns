@@ -1,7 +1,12 @@
 env/
 .env
+<<<<<<< HEAD
 .idea/**
 venv/**
+=======
+venv/
+>>>>>>> user-schema-creation
 **/__pycache__/**
 __pycache__/**
+.idea/**
 **/**/__pycache__/**
