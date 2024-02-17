@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
 class UserType(models.Model):
     USER_TYPE_CHOICES = (
         ('user', 'User'),
@@ -10,6 +9,12 @@ class UserType(models.Model):
     user_type = models.CharField(max_length=100, choices=USER_TYPE_CHOICES, default='user', null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user_type
+
+    def __repr__(self):
+        return f'<UserType: {self.user_type}>'
 
 
 class User(models.Model):
@@ -27,3 +32,9 @@ class User(models.Model):
     rating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def __repr__(self):
+        return f'<User: {self.user_name}>'
