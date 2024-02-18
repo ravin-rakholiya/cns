@@ -51,6 +51,8 @@ class UserType(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.get_user_type_display()
 
 class User(AbstractBaseUser):
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, null=False, blank=False)
@@ -68,6 +70,8 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.email}"
 
 class UserAddress(models.Model):
     add1 = models.CharField(max_length=255, null=False, blank=False)
@@ -80,6 +84,8 @@ class UserAddress(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - {self.city}, {self.country}"
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -89,7 +95,6 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.user.username}"
-
 
 class UserServiceRating(models.Model):
     rate = models.FloatField(default=0.0, null=False, blank=False)
