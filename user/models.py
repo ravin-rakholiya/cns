@@ -68,20 +68,28 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class UserAddress(models.Model):
-    add1 = models.CharField(max_length=255,null=False, blank=False)
-    add2 = models.CharField(max_length=255,null=True,blank=True)
+    add1 = models.CharField(max_length=255, null=False, blank=False)
+    add2 = models.CharField(max_length=255, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    city = models.CharField(max_length=50,null=False, blank=False)
-    provision = models.CharField(max_length=50,null=False, blank=False)
-    country = models.CharField(max_length=50,null=False,blank=False)
-    postal_code = models.CharField(max_length=20,null=False, blank=False)
+    city = models.CharField(max_length=50, null=False, blank=False)
+    provision = models.CharField(max_length=50, null=False, blank=False)
+    country = models.CharField(max_length=50, null=False, blank=False)
+    postal_code = models.CharField(max_length=20, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=False, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     feedback = models.TextField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class UserServiceRating(models.Model):
+    rate = models.FloatField(default=0.0, null=False, blank=False)
+    comment = models.TextField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
