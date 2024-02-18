@@ -26,6 +26,15 @@ env = environ.Env()
 env_file = str(ROOT_DIR.path('.env'))
 env.read_env(env_file)
 
+
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Define the media root directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -54,6 +63,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'user',
+    'service'
 )
 
 APPEND_SLASH=False
@@ -137,10 +147,11 @@ STATICFILES_DIRS = (
 )
 STATIC_URL = 'static/'
 
-MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')
-MEDIA_URL = '/media/'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+
+
+
 
 AWS_DEFAULT_ACL = None
 
