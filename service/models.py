@@ -24,6 +24,7 @@ class UserService(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class UserServiceRating(models.Model):
+    user_service = models.ForeignKey(UserService, on_delete=models.CASCADE, null=False, blank=False)
     rate = models.FloatField(default=0.0, null=False, blank=False)
     comment = models.TextField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
