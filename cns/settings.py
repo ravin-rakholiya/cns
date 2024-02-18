@@ -63,6 +63,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'user',
+    'service'
 )
 
 APPEND_SLASH=False
