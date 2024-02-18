@@ -87,9 +87,15 @@ class Feedback(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.id} - {self.user.username}"
+
 
 class UserServiceRating(models.Model):
     rate = models.FloatField(default=0.0, null=False, blank=False)
     comment = models.TextField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
