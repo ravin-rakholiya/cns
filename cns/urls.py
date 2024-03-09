@@ -19,13 +19,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+app_name = 'user'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('user.urls')),
 
-                  path('login/', views.login_view, name='login'),
-                  path('signup/', views.signup_view, name='signup'),
-                  path('forgetpassword/', views.forgot_password_view, name='forgot_password')
+    path('', include('user.urls'))
+
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

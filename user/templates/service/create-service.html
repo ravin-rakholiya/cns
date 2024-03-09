@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Urban Service Hub</title>
+
+    <link rel="stylesheet" href="{% static 'service/css/style.css' %}">
+</head>
+<body>
+    <h6>Service Information</h6>
+
+    <div class="form-group">
+        <label class="col-form-label">Service Title</label>
+        <input type="text" class="form-control" placeholder="Enter Service Name">
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-form-label">Category</label>
+            <select class="select">
+                <option>Select Category</option>
+                <option>Car wash</option>
+                <option>House Cleaning</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-form-label">Sub Category</label>
+            <select class="select">
+                <option>Select Sub Category</option>
+                <option>House Cleaning</option>
+                <option>Car wash</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-form-label d-block">Price<span class="brief-bio float-end">Set 0 for free</span></label>
+            <input type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-form-label d-block">Duration</label>
+            <div class="form-duration">
+                <input type="text" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group mb-0">
+            <label class="col-form-label">Description</label>
+            <textarea class="form-control ck-editor"></textarea>
+        </div>
+    </div>
+
+    <div class="card add-service">
+        <div class="add-service-toggle">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="sub-title">
+                        <h6>Additional Service</h6>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="status-toggle sml-status float-sm-end">
+                        <input type="checkbox" id="status_1" class="check" checked>
+                        <label for="status_1" class="checktoggle">checkbox</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="addservice-info">
+            <div class="row service-cont">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-form-label">Additional Service</label>
+                        <input type="text" class="form-control" placeholder="Enter Service Item">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-form-label">Price</label>
+                        <input type="text" class="form-control" placeholder="Enter Price">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-form-label">Duration</label>
+                        <input type="text" class="form-control" placeholder="Enter Service Duration">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
