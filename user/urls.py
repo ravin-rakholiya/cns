@@ -1,6 +1,12 @@
 from django.urls import path, include
-from user import views
+from . import views
+
+app_name = 'user'
 
 urlpatterns = [
-	# path('generate_otp', views.GenerateOTP.as_view(), name='generate-otp'),
+
+    path('', views.index, name='index'),
+
+    path('signup', views.signup, name='signup')
+    # path('generate_otp', views.GenerateOTP.as_view(), name='generate-otp'),
 ]
