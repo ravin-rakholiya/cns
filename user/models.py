@@ -103,3 +103,6 @@ class Login(models.Model):
     password = models.CharField(max_length=255)
     remember_me = models.BooleanField(default=False)
     login_with_otp = models.BooleanField(default=False)
+
+
+

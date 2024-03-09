@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from service.models import Provider
 from user.models import User
 
-
+from django.http import HttpResponseRedirect
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
@@ -34,3 +35,32 @@ def login(request):
     return render(request, 'user/login.html')
 def index(request):
     return render(request, 'user/index.html')
+def choose_signup(request):
+    return render(request, 'choose_signup.html')
+
+
+
+def user_signup(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        # Add more fields as needed
+
+        user = User.objects.create(name=name, email=email)
+        # Add more fields as needed
+
+        return HttpResponseRedirect('/success')  # Redirect to a success page
+    else:
+        return render(request, 'user/signup.html')
+def provider_signup(request):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            # Add more fields as needed
+
+            provider = Provider.objects.create(name=name, email=email)
+            # Add more fields as needed
+
+            return HttpResponseRedirect('/success')  # Redirect to a success page
+        else:
+            return render(request, 'user/provider_signup.html')

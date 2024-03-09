@@ -1,11 +1,13 @@
 from django.db import models
 from user.models import User
 
+
 # Create your models here.
 class ServiceCategory(models.Model):
-    name = models.CharField(max_length=255,null=False, blank=False)
+    name = models.CharField(max_length=255, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 class ServicePost(models.Model):
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False)
@@ -16,12 +18,14 @@ class ServicePost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class UserService(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False)
     desc = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 class UserServiceRating(models.Model):
     user_service = models.ForeignKey(UserService, on_delete=models.CASCADE, null=False, blank=False)
@@ -32,3 +36,13 @@ class UserServiceRating(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class Provider(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+
+    # Add more fields as needed
+
+    def __str__(self):
+        return self.name
