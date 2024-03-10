@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
-from user.models import User
+
 
 
 # Create your models here.
@@ -40,9 +41,6 @@ class UserServiceRating(models.Model):
 
 class Provider(models.Model):
     name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-
-    # Add more fields as needed
-
-    def __str__(self):
-        return self.name
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    password = models.CharField(max_length=255)

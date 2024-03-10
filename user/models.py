@@ -1,7 +1,13 @@
+from datetime import timezone
+
 from django.db import models
+
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.shortcuts import redirect, render
+
+from service.models import Provider
 
 
 def avatar_path(instance, filename):
@@ -54,6 +60,7 @@ class UserType(models.Model):
     def __str__(self):
         return self.get_user_type_display()
 
+
 class User(AbstractBaseUser):
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, null=False, blank=False)
     first_name = models.CharField(max_length=50, null=False, blank=False)
@@ -73,6 +80,7 @@ class User(AbstractBaseUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
 
+
 class UserAddress(models.Model):
     add1 = models.CharField(max_length=255, null=False, blank=False)
     add2 = models.CharField(max_length=255, null=True, blank=True)
@@ -87,6 +95,7 @@ class UserAddress(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.city}, {self.country}"
 
+
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     feedback = models.TextField(null=False, blank=False)
@@ -96,13 +105,17 @@ class Feedback(models.Model):
     def __str__(self):
         return f"{self.id} - {self.user.username}"
 
-class Login(models.Model):
+
+
+
+class UserSignup(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=15)
+    phone = models.CharField(max_length=20)
     password = models.CharField(max_length=255)
-    remember_me = models.BooleanField(default=False)
-    login_with_otp = models.BooleanField(default=False)
+class Login_main(models.Model):
+    email = models.EmailField()
+    result = models.CharField(max_length=10)  # 'success' or 'failure'
 
-
-
+    def __str__(self):
+        return f"{self.email} - {self.result} "
