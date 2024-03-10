@@ -44,3 +44,10 @@ class Provider(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=255)
+
+class ServicePostComment(models.Model):
+    comment = models.TextField(null=False, blank=False)
+    interested = models.BooleanField(default=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
