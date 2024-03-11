@@ -92,5 +92,5 @@ def Login_main(request):
 
     return render(request, 'user/Login_main.html')
 
-def servicehtml(request):
+def servicelist(request):
     return render(request, 'service/service_listing.html')
