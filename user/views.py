@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 
 from service.models import Provider
-from user.models import User, UserSignup,Login_main
+from user.models import User, UserSignup, Login_main
 
 from django.http import HttpResponseRedirect
 
@@ -42,8 +42,6 @@ def choose_signup(request):
     return render(request, 'choose_signup.html')
 
 
-
-
 def user_signup(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -60,6 +58,7 @@ def user_signup(request):
         return redirect('user:index')
     else:
         return render(request, 'user/signup.html')
+
 
 def Login_main(request):
     if request.method == 'POST':
@@ -92,3 +91,6 @@ def Login_main(request):
         return render(request, 'user/Login_main.html', {'error': 'Invalid email or password'})
 
     return render(request, 'user/Login_main.html')
+
+def servicelist(request):
+    return render(request, 'service/service_listing.html')
