@@ -9,6 +9,9 @@ class ServiceCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.id
+
 
 class ServicePost(models.Model):
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False)
@@ -19,6 +22,9 @@ class ServicePost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.id
+
 
 class UserService(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -26,6 +32,9 @@ class UserService(models.Model):
     desc = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
 
 
 class UserServiceRating(models.Model):
@@ -44,3 +53,16 @@ class Provider(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.id
+
+class ServicePostComment(models.Model):
+    comment = models.TextField(null=False, blank=False)
+    interested = models.BooleanField(default=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
