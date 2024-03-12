@@ -123,3 +123,11 @@ def forgot_password(request):
 
     return render(request, 'user/password_recovery.html')
 
+
+def password_recovery_success(request):
+    return render(request, 'user/password_recovery_success.html')
+
+
+def faq(request):
+    # Your view logic here
+    return render(request, 'user/faq.html')
