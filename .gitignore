@@ -8,3 +8,5 @@ __pycache__/**
 **/**/__pycache__/**
 .idea/
 get-pip.py
+.DS_Store
+**/.DS_Store

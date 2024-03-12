@@ -5,8 +5,8 @@ from service.models import Provider
 
 
 # Create your views here.
-def index(request):
-    return render(request, 'service/index.html')
+def serviceindex(request):
+    return render(request, 'servicebase.html')
 
 
 def provider_signup(request):
