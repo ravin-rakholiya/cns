@@ -1,7 +1,9 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 
+from cns import settings
 from service.models import Provider
 from user.models import User, UserSignup, Login_main
 
@@ -92,5 +94,40 @@ def Login_main(request):
 
     return render(request, 'user/Login_main.html')
 
+
 def servicelist(request):
     return render(request, 'service/service_listing.html')
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+
+        if user:
+            # Assuming you have a UserProfile model with a one-to-one relationship to User
+            user_profile, created = User.objects.get_or_create(user=user)
+
+            # Generate and store a reset token
+            token = user_profile.generate_reset_token()
+
+            # Send the reset link to the user's email
+            reset_link = f"{request.scheme}://{request.get_host()}/reset-password/?token={token}"
+            subject = 'Password Reset'
+            message = f'Click the following link to reset your password: {reset_link}'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            send_mail(subject, message, from_email, to_email)
+
+            return render(request, 'user/password_recovery_success.html')
+
+    return render(request, 'user/password_recovery.html')
+
+
+def password_recovery_success(request):
+    return render(request, 'user/password_recovery_success.html')
+
+
+def faq(request):
+    # Your view logic here
+    return render(request, 'user/faq.html')
