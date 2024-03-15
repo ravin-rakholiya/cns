@@ -1,25 +1,33 @@
+from django.contrib.auth.views import PasswordResetView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
+from django.urls import reverse_lazy, reverse
 
 from cns import settings
 from service.models import Provider
+from user.forms import ForgotPasswordForm
 from user.models import User, UserSignup, Login_main
 
 from django.http import HttpResponseRedirect
 
+
 def index(request):
     return render(request, 'base.html')
 
+
 def choose_register(request):
-    return render(request, 'register/choose_signup.html')
+    return render(request, 'register/chosose_signup.html')
+
 
 def provide_signup(request):
     return render(request, 'register/provider-signup.html')
 
+
 def user_signup(request):
     return render(request, 'register/user-signup.html')
+
 
 # Create your views here.
 # def signup(request):
@@ -45,9 +53,6 @@ def user_signup(request):
 
 #         return render(request, 'user/index.html')
 #     return render(request, 'user/index.html')
-
-
-
 
 
 # def choose_signup(request):
@@ -108,36 +113,17 @@ def user_signup(request):
 # def servicelist(request):
 #     return render(request, 'service/service_listing.html')
 
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            return redirect('user:reset_password')  # Redirect to password reset page or any other page
+    else:
+        form = ForgotPasswordForm()
 
-# def forgot_password(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         user = User.objects.filter(email=email).first()
-
-#         if user:
-#             # Assuming you have a UserProfile model with a one-to-one relationship to User
-#             user_profile, created = User.objects.get_or_create(user=user)
-
-#             # Generate and store a reset token
-#             token = user_profile.generate_reset_token()
-
-#             # Send the reset link to the user's email
-#             reset_link = f"{request.scheme}://{request.get_host()}/reset-password/?token={token}"
-#             subject = 'Password Reset'
-#             message = f'Click the following link to reset your password: {reset_link}'
-#             from_email = settings.DEFAULT_FROM_EMAIL
-#             to_email = [user.email]
-#             send_mail(subject, message, from_email, to_email)
-
-#             return render(request, 'user/password_recovery_success.html')
-
-#     return render(request, 'user/password_recovery.html')
+    return render(request, 'registration/forgot_password.html', {'form': form})
 
 
-# def password_recovery_success(request):
-#     return render(request, 'user/password_recovery_success.html')
-
-
-# def faq(request):
-#     # Your view logic here
-#     return render(request, 'user/faq.html')
+def reset_password(request):
+    return render(request, 'registration/reset_password.html')
