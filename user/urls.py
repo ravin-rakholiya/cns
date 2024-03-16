@@ -9,6 +9,7 @@ urlpatterns = [
     path('choose_register', choose_register, name='choose_register'),  # Add this line
     path('provide_signup', provide_signup, name='provide_signup'),
     path('user_signup', user_signup, name='user_signup'),
+    path('user_signin', user_signin, name='user_signin'),
    
 ]
     # path('generate_otp', views.GenerateOTP.as_view(), name='generate-otp'),

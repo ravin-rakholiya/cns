@@ -21,6 +21,9 @@ def provide_signup(request):
 def user_signup(request):
     return render(request, 'register/user-signup.html')
 
+def user_signin(request):
+    return render(request, 'login/login.html')
+
 # Create your views here.
 # def signup(request):
 #     if request.method == 'POST':
