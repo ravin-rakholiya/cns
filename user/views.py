@@ -18,7 +18,7 @@ def index(request):
 
 
 def choose_register(request):
-    return render(request, 'register/chosose_signup.html')
+    return render(request, 'register/choose_signup.html')
 
 
 def provide_signup(request):
@@ -28,6 +28,8 @@ def provide_signup(request):
 def user_signup(request):
     return render(request, 'register/user-signup.html')
 
+def user_signin(request):
+    return render(request, 'login/login.html')
 
 # Create your views here.
 # def signup(request):
@@ -122,8 +124,8 @@ def forgot_password(request):
     else:
         form = ForgotPasswordForm()
 
-    return render(request, 'registration/forgot_password.html', {'form': form})
+    return render(request, 'login/forgot_password.html', {'form': form})
 
 
 def reset_password(request):
-    return render(request, 'registration/reset_password.html')
+    return render(request, 'login/reset_password.html')
