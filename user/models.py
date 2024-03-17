@@ -74,6 +74,8 @@ class User(AbstractBaseUser):
     rating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    USERNAME_FIELD = 'email'  # Specify the email field as the USERNAME_FIELD
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
