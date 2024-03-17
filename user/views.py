@@ -21,12 +21,12 @@ def choose_register(request):
     return render(request, 'register/choose_signup.html')
 
 
-def provide_signup(request):
-    return render(request, 'register/provider-signup.html')
+def provider_signup(request):
+    return render(request, 'register/provider_signup.html')
 
 
 def user_signup(request):
-    return render(request, 'register/user-signup.html')
+    return render(request, 'register/user_signup.html')
 
 def user_signin(request):
     return render(request, 'login/login.html')
