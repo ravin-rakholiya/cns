@@ -63,17 +63,17 @@ def user_signup(request):
         return render(request, 'register/user_signup.html')
 
 def user_signin(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            # Redirect to a success page or dashboard
-            return redirect('user:index')
-        else:
-            messages.error(request, 'Invalid email or password.')
-            return render(request, 'login/login.html')
+    # if request.method == 'POST':
+    #     email = request.POST.get('email')
+    #     password = request.POST.get('password')
+    #     user = authenticate(request, email=email, password=password)
+    #     if user is not None:
+    #         login(request, user)
+    #         # Redirect to a success page or dashboard
+    #         return redirect('user:index')
+    #     else:
+    #         messages.error(request, 'Invalid email or password.')
+    #         return render(request, 'login/login.html')
     return render(request, 'index.html')
 # Create your views here.
 # def signup(request):
