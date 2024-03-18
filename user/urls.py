@@ -16,7 +16,10 @@ urlpatterns = [
     path('user_signin', user_signin, name='user_signin'),
 
 
-    # Provider Routs
+    # Provider Routes
     path('provider-services', provider_services, name='provider_services'),
     path('provider-booking', provider_booking, name='provider_booking'),
+
+    # customer Routes
+    path('customer-booking', customer_booking, name='customer_booking'),
 ]

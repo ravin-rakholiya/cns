@@ -4,23 +4,17 @@ from django.shortcuts import render, redirect
 from service.models import Provider
 
 
-# Create your views here.
-def serviceindex(request):
-    return render(request, 'servicebase.html')
+def service_booking(request):
+    context = {"base_template":"base.html",
+        "user_name": "John Smith1",
+        "member_since": "Sep 2021", "active_step":"appointment"}
+    return render(request, 'services/service-booking.html', context=context)
 
+def service_payment(request):
+    context = {"base_template":"base.html", "active_step":"payment"}
+    return render(request, 'services/service-booking-payment.html', context=context)
 
-def provider_signup(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        password = request.POST.get('password')
+def service_boooking_done(request):
+    context = {"base_template":"base.html", "active_step":"done"}
+    return render(request, 'services/service-booking-done.html', context=context)
 
-        # Create a new Provider object and save it to the database
-        provider = Provider(name=name, email=email, phone=phone, password=password)
-        provider.save()
-
-        # You might want to redirect the user to a different page after signup
-        return redirect('user:index')
-
-    return render(request, 'user/provider_signup.html')

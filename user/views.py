@@ -54,13 +54,19 @@ def reset_password(request):
     return render(request, 'login/reset_password.html', context=context)
 
 def provider_services(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'services'}
+    context = {"base_template":"provider-base.html", 'active_menu': 'services', 'user_type':"customer"}
     return render(request, 'provider/provider-services.html', context=context)
 
 def provider_booking(request):
     context = {"base_template":"provider-base.html", 'active_menu': 'bookings'}
     return render(request, 'provider/provider-booking.html', context=context)
 
+
+def customer_booking(request):
+    context = {"base_template":"base.html",  "active_menu": "bookings",
+        "user_name": "John Smith1",
+        "member_since": "Sep 2021",'user_type':"customer"}
+    return render(request, 'customer/customer-booking.html', context=context)
 
 
 

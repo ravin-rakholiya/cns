@@ -38,6 +38,16 @@
                      <li><a href="create-service.html">Create Service</a></li>
                   </ul>
                </li>
+               {% if user_type == 'customer' %}
+               <li class="has-submenu active">
+                            <a href="javascript:void(0);">Customers <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="http://127.0.0.1:8000/user/customer-booking">Dashboard</a></li>
+                                <li class="active"><a href="http://127.0.0.1:8000/user/customer-booking">Booking</a></li>
+                                <li><a href="customer-profile.html">Settings</a></li>
+                            </ul>
+                        </li>
+               {% else %}
                <li class="has-submenu">
                   <a href="javascript:void(0);">Providers <i class="fas fa-chevron-down"></i></a>
                   <ul class="submenu">
@@ -48,6 +58,7 @@
 
                   </ul>
                </li>
+               {% endif %}
                <li><a href="customer-profile.html">Settings</a></li>
 
                <li><a href="about-us.html">About</a></li>
@@ -73,3 +84,5 @@
       </nav>
    </div>
 </header>
+
+
