@@ -4819,7 +4819,8 @@ html.menu-opened body {
 -----------------------*/
 
 .content {
-    padding: 50px 0;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 .page-top {
     display: flex;

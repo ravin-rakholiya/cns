@@ -16,7 +16,6 @@ def avatar_path(instance, filename):
         filename
     )
 
-
 class UserManager(BaseUserManager):
     def create_user(self, username, password):
         """
@@ -47,7 +46,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class UserType(models.Model):
     USER_TYPE_CHOICES = (
         ('user', 'User'),
@@ -77,9 +75,9 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
-
 
 class UserAddress(models.Model):
     add1 = models.CharField(max_length=255, null=False, blank=False)
@@ -95,7 +93,6 @@ class UserAddress(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.city}, {self.country}"
 
-
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     feedback = models.TextField(null=False, blank=False)
@@ -106,13 +103,12 @@ class Feedback(models.Model):
         return f"{self.id} - {self.user.username}"
 
 
-
-
 class UserSignup(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=255)
+
 class Login_main(models.Model):
     email = models.EmailField()
     result = models.CharField(max_length=10)  # 'success' or 'failure'
