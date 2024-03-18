@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+def service_path(instance, filename):
+    return 'service/{}/{}'.format(
+        instance.id,
+        filename
+    )
 
 # Create your models here.
 class ServiceCategory(models.Model):
@@ -43,11 +48,11 @@ class ServicePost(models.Model):
     price = models.FloatField(default=0)
     duration = models.FloatField(default=0)
     address = models.CharField(max_length=100, null=False, blank=False, default='')  # Set default value here
-    country = models.CharField(max_length=100, null=False, blank=False)
-    city = models.CharField(max_length=50, null=False, blank=False)
-    state = models.CharField(max_length=100, null=False, blank=False)
+    country = models.ForeignKey(Country, null=False, blank=False, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, null=False, blank=False, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, null=False, blank=False, on_delete=models.CASCADE)
     pincode = models.CharField(max_length=100, null=False, blank=False)
-    picture = models.ImageField(upload_to='services', null=True, blank=True)
+    picture = models.ImageField(upload_to=service_path, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
