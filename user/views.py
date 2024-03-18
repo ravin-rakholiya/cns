@@ -16,14 +16,16 @@ from django.http import HttpResponseRedirect
 
 
 def index(request):
-    return render(request, 'base.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'base.html', context=context)
 
 
 def choose_register(request):
-    return render(request, 'register/choose_signup.html')
-
+    context = {"base_template":"base.html"}
+    return render(request, 'register/choose_signup.html', context=context)
 
 def provider_signup(request):
+    context = {"base_template": "base.html"}
     if request.method == 'POST':
         form = ProviderSignupForm(request.POST)
         if form.is_valid():
@@ -41,11 +43,12 @@ def provider_signup(request):
             return redirect('user:index')  # Redirect to the index page
     else:
         form = ProviderSignupForm()
-
-    return render(request, 'register/provider_signup.html', {'form': form})
+    context['form'] = form
+    return render(request, 'register/provider-signup.html', context=context)
 
 
 def user_signup(request):
+    context = {"base_template":"base.html"}
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -60,28 +63,48 @@ def user_signup(request):
         # Redirect the user to a different page after signup
         return redirect('user:index')
     else:
-        return render(request, 'register/user_signup.html')
-
+        return render(request, 'register/user-signup.html', context=context)
 
 
 def user_signin(request):
-    return render(request, 'login/login.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'login/login.html', context=context)
 
 
 def forgot_password(request):
+    context = {"base_template":"base.html"}
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            return redirect('user:reset_password')  # Redirect to password reset page or any other page
+            return redirect('user:reset_password', context=context)  # Redirect to password reset page or any other page
     else:
         form = ForgotPasswordForm()
-
-    return render(request, 'login/forgot_password.html', {'form': form})
+    context['form']=form
+    return render(request, 'login/forgot_password.html', context=context)
 
 
 def reset_password(request):
-    return render(request, 'login/reset_password.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'login/reset_password.html', context=context)
+
+def provider_services(request):
+    context = {"base_template":"provider-base.html", 'active_menu': 'services', 'user_type':"customer", "active_header":"providers"}
+    return render(request, 'provider/provider-services.html', context=context)
+
+def provider_booking(request):
+    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
+    return render(request, 'provider/provider-booking.html', context=context)
+
+
+def customer_booking(request):
+    context = {"base_template":"base.html",  "active_menu": "bookings",
+        "user_name": "John Smith1",
+        "member_since": "Sep 2021",'user_type':"customer", "active_header":"customers"}
+    return render(request, 'customer/customer-booking.html', context=context)
+
+
+
 
 
 def provider_dashboard(request):
