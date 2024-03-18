@@ -10,8 +10,5 @@ urlpatterns = [
     path('contact-us', contact_us, name='contact_us'),
     path('privacy-policy', privacy_policy, name='privacy_policy'),
     path('terms-and-conditions', terms_n_conditions, name='terms_n_conditions'),
-   
-
-
     
 ]
