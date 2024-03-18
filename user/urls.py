@@ -11,7 +11,6 @@ urlpatterns = [
     path('reset_password', reset_password, name='reset_password'),
     path('user_signin', user_signin, name='user_signin'),
     path('customer_profile_creation', customer_profile_creation, name='customer_profile_creation'),
-
     # Provider Routs
     path('provider_dashboard', provider_dashboard, name='provider_dashboard'),
     path('', dashboard, name='dashboard')
