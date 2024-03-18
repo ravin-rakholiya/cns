@@ -2,6 +2,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 from service.models import Provider
+from django.shortcuts import render, redirect
+from .forms import ServicePostForm
+
 
 
 # Create your views here.
@@ -24,3 +27,18 @@ def provider_signup(request):
         return redirect('user:index')
 
     return render(request, 'user/provider_signup.html')
+
+
+#def create_service(request):
+#    return render(request, 'create_service.html')
+
+
+def create_service(request):
+    if request.method == 'POST':
+        form = ServicePostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')  # Redirect to a success page
+    else:
+        form = ServicePostForm()
+    return render(request, 'create_service.html', {'form': form})
