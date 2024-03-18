@@ -173,3 +173,6 @@ def forgot_password(request):
 
 def reset_password(request):
     return render(request, 'login/reset_password.html')
+
+def dashboard(request):
+    return render(request, 'index.html')
