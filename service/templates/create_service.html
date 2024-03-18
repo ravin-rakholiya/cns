@@ -72,21 +72,21 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="col-form-label" style="display: block;">Service Title</label>
-                                                                {{ form1.title }}
+                                                                {{ form.title }}
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-form-label" style="display: block;">Service Category</label>
-                                                                {{ form1.category }}
+                                                                {{ form.category }}
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-form-label d-block">Service Price</label>
-                                                                {{ form1.price }}
+                                                                {{ form.price }}
                                                             </div>
                                                         </div>
                                                         
@@ -94,7 +94,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-form-label d-block">Service Duration</label>
                                                                 <div class="form-duration">
-                                                                    {{ form1.duration }}
+                                                                    {{ form.duration }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -102,9 +102,13 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group mb-0">
                                                                 <label class="col-form-label" style="display: block;">Description</label>
-                                                                    {{ form1.desc }}
+                                                                    {{ form.desc }}
                                                             </div>
                                                         </div>
+                                                        
+                                                        <div class="field-btns">
+<button class="btn btn-primary next_btn" type="button">Next <i class="fa-solid fa-arrow-right"></i></button>
+</div>
                                                         
                                                         
                                                         

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from service.models import Provider
 from django.shortcuts import render, redirect
-from .forms import ServicePostStep1Form
+from .forms import ServicePostForm
 
 
 
@@ -35,10 +35,10 @@ def provider_signup(request):
 
 def create_service(request):
     if request.method == 'POST':
-        form1 = ServicePostStep1Form(request.POST)
-        if form1.is_valid():
-            form1.save()
+        form = ServicePostForm(request.POST)
+        if form.is_valid():
+            form.save()
             return redirect('success_url')  # Redirect to a success page
     else:
-        form1 = ServicePostStep1Form()
-    return render(request, 'create_service.html', {'form1': form1})
+        form = ServicePostForm()
+    return render(request, 'create_service.html', {'form': form})
