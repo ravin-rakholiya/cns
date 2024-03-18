@@ -13,16 +13,6 @@ class ServiceCategory(models.Model):
         return self.id
 
 
-class Availability(models.Model):
-    day = models.CharField(max_length=20)
-    available = models.BooleanField(default=False)
-    start_time = models.TimeField(null=True, blank=True)
-    end_time = models.TimeField(null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def _str_(self):
-        return f"{self.user.username}'s availability on {self.day}"
-
 class ServicePost(models.Model):
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -31,11 +21,20 @@ class ServicePost(models.Model):
     hrs_of_work = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    availability = models.ManyToManyField(Availability)
 
     def __str__(self):
         return self.id
 
+class ServiceProviderAvailability(models.Model):
+    day = models.CharField(max_length=20)
+    available = models.BooleanField(default=False)
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    service_post = models.ForeignKey(ServicePost, on_delete=models.CASCADE)
+
+    def _str_(self):
+        return f"{self.user.username}'s availability on {self.day}"
 
 class UserService(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
