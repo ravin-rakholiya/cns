@@ -4,10 +4,6 @@ from user.views import *
 app_name = 'user'
 
 urlpatterns = [
-
-    # Auth Routs
-    path('', index, name='index'),
-    path('index', index, name='index_html'),  # Add this line
     path('choose_register', choose_register, name='choose_register'),  # Add this line
     path('provider_signup', provider_signup, name='provide_signup'),
     path('user_signup', user_signup, name='user_signup'),
@@ -18,5 +14,5 @@ urlpatterns = [
 
     # Provider Routs
     path('provider_dashboard', provider_dashboard, name='provider_dashboard'),
-    path('dashboard', dashboard, name='dashboard')
+    path('', dashboard, name='dashboard')
 ]
