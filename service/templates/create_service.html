@@ -1,9 +1,7 @@
 {% extends 'servicebase.html' %}
 {% load static %}
-
 {% block body_block %}
-    {% include 'servicehead.html' %}
-    
+   
     <div class="breadcrumb-bar">
         <div class="container">
             <div class="row">
@@ -59,14 +57,6 @@
                                         <h6>Gallery</h6>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="multi-step-icon">
-                                        <span><i class="fa-solid fa-chart-bar"></i></span>
-                                    </div>
-                                    <div class="multi-step-info">
-                                        <h6>Seo</h6>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                         <div class="service-inform-fieldset">
@@ -77,6 +67,48 @@
                                             <div class="sub-title">
                                                 <h6>Service Information</h6>
                                                 <div class="form-group">
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" style="display: block;">Service Title</label>
+                                                                {{ form1.title }}
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" style="display: block;">Service Category</label>
+                                                                {{ form1.category }}
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label d-block">Service Price</label>
+                                                                {{ form1.price }}
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label d-block">Service Duration</label>
+                                                                <div class="form-duration">
+                                                                    {{ form1.duration }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-12">
+                                                            <div class="form-group mb-0">
+                                                                <label class="col-form-label" style="display: block;">Description</label>
+                                                                    {{ form1.desc }}
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        
+                                                        
+                                                    </form>
                                                     
                                                     
                                                 </div>
