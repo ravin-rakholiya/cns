@@ -62,19 +62,32 @@ def user_signup(request):
     else:
         return render(request, 'register/user_signup.html')
 
+
 def user_signin(request):
     # if request.method == 'POST':
     #     email = request.POST.get('email')
     #     password = request.POST.get('password')
-    #     user = authenticate(request, email=email, password=password)
+    #     # Check if the user exists in the User table
+    #     user = authenticate(email=email, password=password)
     #     if user is not None:
     #         login(request, user)
-    #         # Redirect to a success page or dashboard
     #         return redirect('user:index')
-    #     else:
-    #         messages.error(request, 'Invalid email or password.')
-    #         return render(request, 'login/login.html')
-    return render(request, 'index.html')
+    #
+    #     # Check if the user exists in the Provider table
+    #     try:
+    #         provider = Provider.objects.get(email=email)
+    #         if provider.password == password:
+    #             # Create a session for the provider
+    #             request.session['provider_id'] = provider.id
+    #             return redirect('user:index')
+    #     except Provider.DoesNotExist:
+    #         pass
+    #
+    #     # If no user was found, show an error message
+    #     error_message = "Invalid email or password. Please try again."
+    #     return render(request, 'login/login.html', {'error_message': error_message})
+    # else:
+        return render(request, 'login/login.html')
 # Create your views here.
 # def signup(request):
 #     if request.method == 'POST':
