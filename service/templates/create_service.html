@@ -1,0 +1,94 @@
+{% extends 'servicebase.html' %}
+{% load static %}
+
+{% block body_block %}
+    {% include 'servicehead.html' %}
+    
+    <div class="breadcrumb-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <h2 class="breadcrumb-title">Create Service</h2>
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Create Service</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 mx-auto">
+                        <div class="service-wizard">
+                            <ul id="progressbar">
+                                <li class="active">
+                                    <div class="multi-step-icon span-info">
+                                        <span><i class="fa-regular fa-circle-check"></i></span>
+                                    </div>
+                                    <div class="multi-step-info">
+                                        <h6>Information</h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="multi-step-icon">
+                                        <span><i class="fa-regular fa-clock"></i></span>
+                                    </div>
+                                    <div class="multi-step-info">
+                                        <h6>Availability</h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="multi-step-icon">
+                                        <span><i class="fa-regular fa-map"></i></span>
+                                    </div>
+                                    <div class="multi-step-info">
+                                        <h6>Location</h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="multi-step-icon">
+                                        <span><i class="feather-image"></i></span>
+                                    </div>
+                                    <div class="multi-step-info">
+                                        <h6>Gallery</h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="multi-step-icon">
+                                        <span><i class="fa-solid fa-chart-bar"></i></span>
+                                    </div>
+                                    <div class="multi-step-info">
+                                        <h6>Seo</h6>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="service-inform-fieldset">
+                            <fieldset id="first-field">
+                                <div class="card add-service">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="sub-title">
+                                                <h6>Service Information</h6>
+                                                <div class="form-group">
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -24,3 +24,7 @@ def provider_signup(request):
         return redirect('user:index')
 
     return render(request, 'user/provider_signup.html')
+
+
+def create_service(request):
+    return render(request, 'create_service.html')
