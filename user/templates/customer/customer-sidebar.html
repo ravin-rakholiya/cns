@@ -1,1 +1,31 @@
-customer-sidebar.html
+{% load static %}
+<div class="col-lg-3 theiaStickySidebar">
+    <div class="settings-widget">
+        <div class="settings-header">
+            <div class="settings-img">
+                <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+            </div>
+            <h6>{{ user_name }}</h6>
+            <p>Member Since {{ member_since }}</p>
+        </div>
+        <div class="settings-menu">
+            <ul>
+                <li>
+                    <a href="http://127.0.0.1:8000/user/customer-booking" {% if active_menu == 'bookings' %}class="active"{% endif %}>
+                        <i class="feather-smartphone"></i> <span>Bookings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="customer-profile.html" {% if active_menu == 'settings' %}class="active"{% endif %}>
+                        <i class="feather-settings"></i> <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1:8000/user/" {% if active_menu == 'logout' %}class="active"{% endif %}>
+                        <i class="feather-log-out"></i> <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

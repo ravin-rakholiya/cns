@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SubscriptionConfig(AppConfig):
+class InfoPagesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'subscription'
+    name = 'info_pages'

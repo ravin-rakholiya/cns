@@ -1,6 +1,14 @@
-{% extends 'servicebase.html' %}
 {% load static %}
-{% block body_block %}
+
+{% if base_template == 'base.html' %}
+    {% include 'head.html' %}
+    {% include 'header.html' %}
+    <body class="base-body">
+{% elif base_template == 'provider-base.html' %}
+    {% include 'head.html' %}
+    {% include 'header.html' %}
+    <body class="provider-body">
+{% endif %}
     <div class="breadcrumb-bar">
         <div class="container">
           <div class="row">
@@ -158,5 +166,4 @@
           </div>
         </div>
       </div>
-
-{% endblock %}
+{% include 'footer.html' %}

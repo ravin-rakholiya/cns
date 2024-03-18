@@ -1,15 +1,14 @@
 from django.urls import path, include
-from service import views
 from service.views import *
 
 
 app_name = 'service'
 
 urlpatterns = [
-    path('serviceindex', serviceindex, name='service-index'),
-    path('provider_signup', views.provider_signup, name='provider_signup'),
-    path('create_service', views.create_service, name='create_service'),
-    path('servicedetail', views.servicedetail, name='servicedetail'),
-
-    # path('generate_otp', views.GenerateOTP.as_view(), name='generate-otp'),
+    path('service-create', service_create, name='service_create'),
+    path('service-detail', service_detail, name='service_detail'),
+    path('service-booking', service_booking, name='service_booking'),
+    path('service-payment', service_payment, name='service_payment'),
+    path('service-booking-done', service_boooking_done, name='service_boooking_done'),
+    path('service-list', service_list, name='service_list'),
 ]
