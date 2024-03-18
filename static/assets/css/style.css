@@ -3062,11 +3062,14 @@ html.menu-opened body {
 .work-box h4 {
 	font-weight: 600;
 	font-size: 60px;
-	color: #EDECF8;
+	color: #28283ccd;
 	margin-bottom: 0;
 	position: absolute;
     top: -30px;
     left: 0;
+}
+.offer-path-content h2{
+	color: white;
 }
 .rating {
 	margin-bottom: 17px;

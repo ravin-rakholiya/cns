@@ -87,48 +87,6 @@
 
 
 <!-- Top providers -->
-{#<section class="providers-section">#}
-{#    <div class="container">#}
-{#        <div class="section-heading">#}
-{#            <div class="row align-items-center">#}
-{#                <div class="col-md-6 aos" data-aos="fade-up">#}
-{#                    <h2>Top Providers</h2>#}
-{#                    <p>Meet Our Experts</p>#}
-{#                </div>#}
-{#                <div class="col-md-6 text-md-end aos" data-aos="fade-up">#}
-{#                    <a href="{% url 'user:index' %}" class="btn btn-primary btn-view">View All<i class="feather-arrow-right-circle"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="row aos" data-aos="fade-up">#}
-{#            {% for provider in providers %}#}
-{#            <div class="col-lg-3 col-sm-6">#}
-{#                <div class="providerset">#}
-{#                    <div class="providerset-img">#}
-{#                        <a href="{% url 'provider-details' provider.id %}">#}
-{#                            <img src="{{ provider.image.url }}" alt="img">#}
-{#                        </a>#}
-{#                    </div>#}
-{#                    <div class="providerset-content">#}
-{#                        <div class="providerset-price">#}
-{#                            <div class="providerset-name">#}
-{#                                <h4><a href="{% url 'provider-details' provider.id %}">{{ provider.name }}</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>#}
-{#                                <span>{{ provider.specialization }}</span>#}
-{#                            </div>#}
-{#                            <div class="providerset-prices">#}
-{#                                <h6>${{ provider.hourly_rate }}<span>/hr</span></h6>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="provider-rating">#}
-{#                            <!-- Add rating if available -->#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    </div>#}
-{#</section>#}
 <section class="providers-section">
   <div class="container">
     <div class="section-heading">
@@ -138,7 +96,7 @@
           <p>Meet Our Experts</p>
         </div>
         <div class="col-md-6 text-md-end aos" data-aos="fade-up">
-          <a href="providers.html" class="btn btn-primary btn-view">View All<i class="feather-arrow-right-circle"></i></a>
+          <a href="{% url 'user:index' %}" class="btn btn-primary btn-view">View All<i class="feather-arrow-right-circle"></i></a>
         </div>
       </div>
     </div>
@@ -146,14 +104,14 @@
       <div class="col-lg-3 col-sm-6">
         <div class="providerset">
           <div class="providerset-img">
-            <a href="provider-details.html">
-              <img src="img/provider/provider-11.jpg" alt="img">
+            <a href="{% url 'user:index' %}">
+              <img src="{% static 'assets/img/provider/provider-11.jpg' %}" alt="img">
             </a>
           </div>
           <div class="providerset-content">
             <div class="providerset-price">
               <div class="providerset-name">
-                <h4><a href="provider-details.html">John Smith</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
+                <h4><a href="{% url 'user:index' %}">John Smith</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
                 <span>Electrician</span>
               </div>
               <div class="providerset-prices">
@@ -168,14 +126,14 @@
       <div class="col-lg-3 col-sm-6">
         <div class="providerset">
           <div class="providerset-img">
-            <a href="provider-details.html">
-              <img src="assets/img/provider/provider-12.jpg" alt="img">
+            <a href="{% url 'user:index' %}">
+              <img src="{% static 'assets/img/provider/provider-12.jpg' %}" alt="img">
             </a>
           </div>
           <div class="providerset-content">
             <div class="providerset-price">
               <div class="providerset-name">
-                <h4><a href="provider-details.html">Michael</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
+                <h4><a href="{% url 'user:index' %}">Michael</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
                 <span>Carpenter</span>
               </div>
               <div class="providerset-prices">
@@ -190,14 +148,14 @@
       <div class="col-lg-3 col-sm-6">
         <div class="providerset">
           <div class="providerset-img">
-            <a href="provider-details.html">
-              <img src="assets/img/provider/provider-13.jpg" alt="img">
+            <a href="{% url 'user:index' %}">
+              <img src="{% static 'assets/img/provider/provider-13.jpg' %}" alt="img">
             </a>
           </div>
           <div class="providerset-content">
             <div class="providerset-price">
               <div class="providerset-name">
-                <h4><a href="provider-details.html">Antoinette</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
+                <h4><a href="{% url 'user:index' %}">Antoinette</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
                 <span>Cleaner</span>
               </div>
               <div class="providerset-prices">
@@ -212,14 +170,14 @@
       <div class="col-lg-3 col-sm-6">
         <div class="providerset">
           <div class="providerset-img">
-            <a href="provider-details.html">
-              <img src="assets/img/provider/provider-14.jpg" alt="img">
+            <a href="{% url 'user:index' %}">
+              <img src="{% static 'assets/img/provider/provider-14.jpg' %}" alt="img">
             </a>
           </div>
           <div class="providerset-content">
             <div class="providerset-price">
               <div class="providerset-name">
-                <h4><a href="provider-details.html">Thompson</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
+                <h4><a href="{% url 'user:index' %}">Thompson</a><i class="fa fa-check-circle" aria-hidden="true"></i></h4>
                 <span>Mechanic</span>
               </div>
               <div class="providerset-prices">
@@ -306,7 +264,7 @@
       <div class="row align-items-center">
         <div class="col-md-6 aos" data-aos="fade-up">
           <h2>Most Popular Services</h2>
-          <p>Explore the greatest services. You won’t be disappointed</p>
+          <p>Explore the greatest our services. You won’t be disappointed</p>
         </div>
         <div class="col-md-6 text-md-end aos" data-aos="fade-up">
           <div class="owl-nav mynav1"></div>
@@ -319,34 +277,23 @@
           {% for service in services %}
           <div class="service-widget aos" data-aos="fade-up">
             <div class="service-img">
-              <a href="{% url 'service-details' service.id %}">
-                <img class="img-fluid serv-img" alt="Service Image" src="{% static service.image %}">
+              <a href="{{ service.link }}">
+                <img class="img-fluid serv-img" alt="Service Image" src="{{ service.image }}">
               </a>
               <div class="fav-item">
-                <a href="{% url 'categories' %}">
-                  <span class="item-cat">{{ service.category }}</span>
-                </a>
-                <a href="javascript:void(0)" class="fav-icon">
-                  <i class="feather-heart"></i>
-                </a>
+                <a href="#"><span class="item-cat">{{ service.category }}</span></a>
+                <a href="#"><i class="feather-heart"></i></a>
               </div>
               <div class="item-info">
-                <a href="{% url 'providers' %}">
-                  <span class="item-img"><img src="{% static 'assets/img/profiles/avatar-01.jpg' %}{{ service.provider.image }}" class="avatar" alt="User"></span>
-                </a>
+                <a href="#"><span class="item-img"><img src="{{ service.provider_image }}" class="avatar" alt="User"></span></a>
               </div>
             </div>
             <div class="service-content">
-              <h3 class="title">
-                <a href="{% url 'service-details' service.id %}">{{ service.title }}</a>
-              </h3>
+              <h3 class="title"><a href="{{ service.link }}">{{ service.title }}</a></h3>
               <p><i class="feather-map-pin"></i>{{ service.location }}<span class="rate"><i class="fas fa-star filled"></i>{{ service.rating }}</span></p>
               <div class="serv-info">
-                <h6>${{ service.price }}</h6>
-                {% if service.old_price %}
-                <span class="old-price">${{ service.old_price }}</span>
-                {% endif %}
-                <a href="{% url 'service-details' service.id %}" class="btn btn-book">Book Now</a>
+                <h6>{{ service.price }}<span class="old-price">{{ service.old_price }}</span></h6>
+                <a href="{{ service.link }}" class="btn btn-book">Book Now</a>
               </div>
             </div>
           </div>
@@ -355,7 +302,7 @@
       </div>
     </div>
     <div class="btn-sec aos" data-aos="fade-up">
-      <a href="{% url 'user:index' %}" class="btn btn-primary btn-view">View All<i class="feather-arrow-right-circle"></i></a>
+      <a href="index.html" class="btn btn-primary btn-view">View All<i class="feather-arrow-right-circle"></i></a>
     </div>
   </div>
 </section>
@@ -363,7 +310,6 @@
 
 <div class="mouse-cursor cursor-outer"></div>
 <div class="mouse-cursor cursor-inner"></div>
-
 </div>
 
 <div class="progress-wrap active-progress">
