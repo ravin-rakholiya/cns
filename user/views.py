@@ -105,4 +105,40 @@ def customer_profile_creation(request):
     return render(request, 'customer/customer_profile_creation.html', {'user_form': user_form, 'address_form': address_form})
 
 
-
+def dashboard(request):
+    services = [
+        {
+            "link": "service-details.html",
+            "image": "../../static/assets/img/services/service-01.jpg",
+            "category": "Plumbing",
+            "provider_image": "../../static/assets/img/profiles/avatar-05.jpg",
+            "title": "Pipe Installation & Repair",
+            "location": "New York, NY, USA",
+            "rating": "4.8",
+            "price": "$30.00",
+            # "old_price": "$45.00"
+        },
+        {
+            "link": "service-details.html",
+            "image": "../../static/assets/img/services/service-02.jpg",
+            "category": "Electrical",
+            "provider_image": "../../static/assets/img/profiles/avatar-06.jpg",
+            "title": "Electrical Installation",
+            "location": "Los Angeles, CA, USA",
+            "rating": "4.9",
+            "price": "$50.00",
+            "old_price": "$60.00"
+        },
+        {
+            "link": "service-details.html",
+            "image": "../../static/assets/img/services/service-03.jpg",
+            "category": "Painting",
+            "provider_image": "../../static/assets/img/profiles/avatar-07.jpg",
+            "title": "House Painting",
+            "location": "Chicago, IL, USA",
+            "rating": "4.7",
+            "price": "$40.00",
+            # "old_price": "$55.00"
+        },
+    ]
+    return render(request, 'index.html', {'services': services})
