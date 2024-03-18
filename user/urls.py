@@ -22,4 +22,8 @@ urlpatterns = [
 
     # customer Routes
     path('customer-booking', customer_booking, name='customer_booking'),
+
+
+
+    
 ]
