@@ -14,37 +14,54 @@ from django.http import HttpResponseRedirect
 
 
 def index(request):
-    return render(request, 'base.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'base.html', context=context)
 
 
 def choose_register(request):
-    return render(request, 'register/choose_signup.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'register/choose_signup.html', context=context)
 
 
 def provide_signup(request):
-    return render(request, 'register/provider-signup.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'register/provider-signup.html', context=context)
 
 
 def user_signup(request):
-    return render(request, 'register/user-signup.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'register/user-signup.html', context=context)
 
 def user_signin(request):
-    return render(request, 'login/login.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'login/login.html', context=context)
 
 def forgot_password(request):
+    context = {"base_template":"base.html"}
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            return redirect('user:reset_password')  # Redirect to password reset page or any other page
+            return redirect('user:reset_password', context=context)  # Redirect to password reset page or any other page
     else:
         form = ForgotPasswordForm()
-
-    return render(request, 'login/forgot_password.html', {'form': form})
+    context['form']=form
+    return render(request, 'login/forgot_password.html', context=context)
 
 
 def reset_password(request):
-    return render(request, 'login/reset_password.html')
+    context = {"base_template":"base.html"}
+    return render(request, 'login/reset_password.html', context=context)
 
-def provider_dashboard(request):
-    return render(request, 'provider/provider-dashboard.html')
+def provider_services(request):
+    context = {"base_template":"provider-base.html", 'active_menu': 'services'}
+    return render(request, 'provider/provider-services.html', context=context)
+
+def provider_booking(request):
+    context = {"base_template":"provider-base.html", 'active_menu': 'bookings'}
+    return render(request, 'provider/provider-booking.html', context=context)
+
+
+
+
+

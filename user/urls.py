@@ -17,5 +17,6 @@ urlpatterns = [
 
 
     # Provider Routs
-    path('provider_dashboard', provider_dashboard, name='provider_dashboard'),
+    path('provider-services', provider_services, name='provider_services'),
+    path('provider-booking', provider_booking, name='provider_booking'),
 ]
