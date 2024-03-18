@@ -11,6 +11,9 @@ from .forms import ServicePostForm
 def serviceindex(request):
     return render(request, 'servicebase.html')
 
+def servicedetail(request):
+    return render(request, 'servicedetail.html')
+
 
 def provider_signup(request):
     if request.method == 'POST':

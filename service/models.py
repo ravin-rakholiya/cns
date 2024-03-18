@@ -60,6 +60,16 @@ class ServicePost(models.Model):
         return str(self.id)
 
 
+class ServiceProviderAvailability(models.Model):
+    day = models.CharField(max_length=20)
+    available = models.BooleanField(default=False)
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    service_post = models.ForeignKey(ServicePost, on_delete=models.CASCADE)
+
+    def _str_(self):
+        return f"{self.user.username}'s availability on {self.day}"
 
 class UserService(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
