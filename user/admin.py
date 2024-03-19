@@ -6,7 +6,6 @@ from django.contrib.auth.models import Permission
 
 from user.models import *
 
-
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
@@ -64,12 +63,12 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'email_verified')
+    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'email_verified',  'last_login')
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password', 'email_verified')}),
         ('Profile Picture', {'fields': ('avatar',)}),
-        ('Additional Info', {'fields': ('first_name', 'last_name')}),
+        ('Additional Info', {'fields': ('first_name', 'last_name','bio')}),
         ('Permissions', {'fields': ('is_staff', 'is_admin',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -89,3 +88,49 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+
+
+
+
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'created_at', 'updated_at')  # Fields to display in the list view
+    list_filter = ('created_at', 'updated_at')  # Add filters for created_at and updated_at fields
+    search_fields = ('user__username', 'feedback')  # Enable search by user username and feedback content
+    readonly_fields = ('id', 'created_at', 'updated_at')  # Make certain fields read-only
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'feedback')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)  # Make the timestamps collapsible
+        }),
+    )
+admin.site.register(Feedback, FeedbackAdmin)
+
+
+
+
+class EmailVerificationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email_to', 'verification_token', 'validity')  # Fields to display in the list view
+    list_filter = ('validity',)  # Add filter for the validity field
+    search_fields = ('email_to__username', 'verification_token')  # Enable search by user username and verification token
+    readonly_fields = ('id', 'validity')  # Make certain fields read-only
+    fieldsets = (
+        (None, {
+            'fields': ('email_to', 'verification_token')
+        }),
+        ('Validity', {
+            'fields': ('validity',),
+            'classes': ('collapse',)  # Make the validity field collapsible
+        }),
+    )
+
+    def has_delete_permission(self, request, obj=None):
+        return False 
+admin.site.register(EmailVerification, EmailVerificationAdmin)
+
+
+
+
+

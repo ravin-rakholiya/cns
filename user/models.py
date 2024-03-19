@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 )
 from django.core.validators import ValidationError
 from django.db import models
-# from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from math import sin, cos, sqrt, atan2, radians
 import string
 import uuid
@@ -46,9 +46,12 @@ class UserManager(BaseUserManager):
             username=username,
             password=password,
         )
+        user.is_admin = True
+        user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
+
 
 class UserType(models.Model):
     USER_TYPE_CHOICES = (
@@ -116,10 +119,10 @@ class User(AbstractBaseUser):
 
         super(User, self).save(*args, **kwargs)
 
-    user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, null=False, blank=False)
+    user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, default = 1, null=False, blank=False)
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
-    username = models.CharField(max_length=100, null=False, blank=False)
+    username = models.CharField(max_length=100, null=False, blank=False, unique=True)
     email = models.EmailField(blank=True, null=True, unique=True, db_index=True)
     email_verified = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=20, null=False, blank=False, unique=True)
@@ -157,13 +160,13 @@ class User(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         return True
 
-    # def get_tokens_for_user(self):
-    #     refresh = RefreshToken.for_user(self)
-    #     data = {
-    #         'refresh': str(refresh),
-    #         'access': str(refresh.access_token),
-    #     }   
-    #     return data
+    def get_tokens_for_user(self):
+        refresh = RefreshToken.for_user(self)
+        data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }   
+        return data
 
     def generate_random_string(length):
         characters = string.ascii_letters + string.digits  # include both letters and digits
