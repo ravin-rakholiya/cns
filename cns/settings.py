@@ -66,7 +66,8 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'user',
     'service',
-    'info_pages'
+    'info_pages',
+    'notifications'
 )
 
 APPEND_SLASH=False
