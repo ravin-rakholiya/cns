@@ -1,5 +1,5 @@
 from django import forms
-from .models import ServicePost, ServiceCategory
+from .models import *
 
 
 class ServicePostForm(forms.ModelForm):
@@ -11,27 +11,27 @@ class ServicePostForm(forms.ModelForm):
         self.fields['city'].empty_label = "Select city"
 
     class Meta:
-        model = ServicePost
-        fields = ['title', 'category', 'desc', 'price', 'duration', 'address', 'country', 'state', 'city', 'pincode', 'picture']
-        labels = {
-            'title': 'Title',
-            'category': 'Category',
-            'desc': 'Description',
-            'price': 'Price',
-            'duration': 'Duration',
-            'address': 'Address',
-            'country': 'Country',
-            'state': 'State',
-            'city': 'City',
-            'pincode': 'Pincode',
-            'picture': 'Picture',
-        }
-        widgets = {
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'country': forms.Select(attrs={'class': 'form-control'}),
-            'state': forms.Select(attrs={'class': 'form-control'}),
-            'city': forms.Select(attrs={'class': 'form-control'}),
-        }
+        model = ProviderService
+        fields = []
+        # labels = {
+        #     'title': 'Title',
+        #     'category': 'Category',
+        #     'desc': 'Description',
+        #     'price': 'Price',
+        #     'duration': 'Duration',
+        #     'address': 'Address',
+        #     'country': 'Country',
+        #     'state': 'State',
+        #     'city': 'City',
+        #     'pincode': 'Pincode',
+        #     'picture': 'Picture',
+        # }
+        # widgets = {
+        #     'category': forms.Select(attrs={'class': 'form-control'}),
+        #     'country': forms.Select(attrs={'class': 'form-control'}),
+        #     'state': forms.Select(attrs={'class': 'form-control'}),
+        #     'city': forms.Select(attrs={'class': 'form-control'}),
+        # }
 
     def clean(self):
         cleaned_data = super().clean()
