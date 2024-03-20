@@ -6,45 +6,108 @@ from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.urls import reverse_lazy, reverse
 from pyexpat.errors import messages
-
 from cns import settings
 from service.models import *
 from user.forms import *
 from user.models import *
-
+from django.views import View
 from django.http import HttpResponseRedirect
-
-
+from django.contrib import messages
+from user.templatetags.custom_message import custom_message
+from user.scripts import *
+from notifications.scripts import *
 def index(request):
     context = {"base_template":"base.html"}
     return render(request, 'base.html', context=context)
 
 
-def choose_register(request):
-    context = {"base_template":"base.html"}
-    return render(request, 'register/choose_signup.html', context=context)
+# def choose_register(request):
+#     context = {"base_template":"base.html"}
+#     return render(request, 'register/choose_signup.html', context=context)
 
-def provider_signup(request):
-    context = {"base_template":"base.html"}
-    if request.method == 'POST':
-        form = ProviderSignupForm(request.POST)
+class ChooseRegisterView(View):
+    template_name = 'register/choose_signup.html'
+    base_template = 'base.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'base_template': self.base_template}
+        return render(request, self.template_name, context=context)
+
+
+
+
+# def provider_signup(request):
+#     context = {"base_template":"base.html"}
+#     if request.method == 'POST':
+#         form = ProviderSignupForm(request.POST)
+#         if form.is_valid():
+#             # Process the data in form.cleaned_data
+#             names = form.cleaned_data['name']
+#             emails = form.cleaned_data['email']
+#             phones = form.cleaned_data['phone']
+#             passwords = form.cleaned_data['password']
+
+#             # Save the data to the database
+#             provider = Provider(name=names, email=emails, phone=phones, password=passwords)
+#             provider.save()
+
+#             # Redirect to a success page or return a success message
+#             return redirect('user:index')  # Redirect to the index page
+#     else:
+#         form = ProviderSignupForm()
+#     context['form'] = form
+#     return render(request, 'register/provider-signup.html', context=context)
+
+class ProviderSignupView(View):
+    template_name = 'register/provider-signup.html'
+    base_template = 'base.html'
+    form_class = ProviderSignupForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {'base_template': self.base_template, 'form': form}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        context = {'base_template': self.base_template, 'form': form}
         if form.is_valid():
             # Process the data in form.cleaned_data
-            names = form.cleaned_data['name']
-            emails = form.cleaned_data['email']
-            phones = form.cleaned_data['phone']
-            passwords = form.cleaned_data['password']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            password = form.cleaned_data['password']
+            print("76------", first_name)
+            print("77------", last_name)
+            print("78------", email)
+            print("79------", phone)
+            print("80------", password)
+            user = User.objects.filter(email = email)
+            if user:
+                if not user.last().email_verified:
+                    messages.error(request, "Please verify your email.")
+                    return redirect(reverse('user:verify_email'))
 
-            # Save the data to the database
-            provider = Provider(name=names, email=emails, phone=phones, password=passwords)
-            provider.save()
-
+            user = User.objects.create(email = email, first_name = first_name, last_name = last_name, phone_number=phone)
+            user.set_password(password)
+            user.email_verified = False
+            user.save()
+            verification_token = generate_verification_token()
+            verification_link = generate_user_account_verification_link(verification_token, "verify-email?e=")
+            EmailVerification.objects.get_or_create(email_to = user, verification_token = verification_token)
+            print("99-----",verification_link)
+            send_account_verification_mail("Verify your email to create your USH Account",first_name, verification_link, email)
             # Redirect to a success page or return a success message
-            return redirect('user:index')  # Redirect to the index page
-    else:
-        form = ProviderSignupForm()
-    context['form'] = form
-    return render(request, 'register/provider-signup.html', context=context)
+            context['success_message'] = "Signup successful!"
+            return redirect('user:verify_email')  # Redirect to the index page
+
+        
+        return render(request, self.template_name, context=context)
+
+def verifyEmail(request):
+    context = {"base_template":"base.html"}
+    return render(request, 'register/verify_email.html', context=context)
 
 
 def user_signup(request):

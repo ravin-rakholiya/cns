@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=self.normalize_email(username),
         )
-
+        user.phone_number = "1234567890"
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -46,6 +46,7 @@ class UserManager(BaseUserManager):
             username=username,
             password=password,
         )
+        user.phone_number = "1234567890"
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
@@ -191,12 +192,13 @@ class EmailVerification(models.Model):
 
         return valid
 
-
+from service.models import ServiceBooking
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     feedback = models.TextField(null=False, blank=False)
+    service = models.ForeignKey(ServiceBooking, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.id} - {self.user.username}"
+        return str(self.user.username)

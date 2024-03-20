@@ -12,13 +12,18 @@ class UserSignupForm(forms.ModelForm):
             'password': forms.PasswordInput(),
         }
 
-class ProviderSignupForm(forms.ModelForm):
-    class Meta:
-        model = ProviderService
-        fields = ['title']
-        # widgets = {
-        #     'password': forms.PasswordInput(),
-        # }
+# class ProviderSignupForm(forms.Form):
+#     name = forms.CharField(max_length=100)
+#     email = forms.EmailField()
+#     phone = forms.CharField(max_length=15)
+#     password = forms.CharField(widget=forms.PasswordInput)
+
+class ProviderSignupForm(forms.Form):
+    first_name = forms.CharField(max_length=100, label='First Name', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your First Name', 'required': True}))
+    last_name = forms.CharField(max_length=100, label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Last Name', 'required': True}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Email', 'required': True}))
+    phone = forms.CharField(max_length=15, label='Phone Number', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(256) 789-6253', 'required': True}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))   
 
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(

@@ -27280,3 +27280,11 @@ td.ant-table-column-sort {
 	align-items: center;
 	justify-content: center;
 }
+
+.custom-message {
+    background-color: #28a745; /* Green background color */
+    color: #fff; /* White text color */
+    padding: 10px 15px; /* Padding for the message */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px; /* Bottom margin */
+}

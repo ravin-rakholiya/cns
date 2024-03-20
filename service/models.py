@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from user.models import *
 
@@ -15,7 +14,7 @@ class ServiceCategory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return str(self.name)
 
 class ProviderService(models.Model):
     title = models.CharField(max_length=255, null=False, blank=False)

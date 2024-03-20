@@ -6,6 +6,39 @@ from django.contrib.auth.models import Permission
 
 from user.models import *
 
+
+class UserTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'created_at', 'updated_at')  # Fields to display in the list view
+    search_fields = ('user_type',)  # Enable search by user type
+    readonly_fields = ('id', 'created_at', 'updated_at')  # Make certain fields read-only
+    list_filter = ('created_at', 'updated_at')  # Add list filters for created_at and updated_at
+    actions = ['mark_as_provider', 'mark_as_customer']  # Custom admin actions
+
+    fieldsets = (
+        ('User Type Info', {
+            'fields': ('user_type',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),  # Make timestamps collapsible
+        }),
+    )
+
+    def mark_as_provider(self, request, queryset):
+        rows_updated = queryset.update(user_type='provider')
+        self.message_user(request, f'{rows_updated} user type(s) marked as provider.')
+
+    mark_as_provider.short_description = 'Mark selected as Provider'
+
+    def mark_as_customer(self, request, queryset):
+        rows_updated = queryset.update(user_type='customer')
+        self.message_user(request, f'{rows_updated} user type(s) marked as customer.')
+
+    mark_as_customer.short_description = 'Mark selected as Customer'
+
+admin.site.register(UserType, UserTypeAdmin)
+
+
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
@@ -63,10 +96,10 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'email_verified',  'last_login')
+    list_display = ('id', 'username', 'email', 'phone_number','first_name', 'last_name', 'is_admin', 'email_verified',  'last_login')
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password', 'email_verified')}),
+        (None, {'fields': ('username', 'email', 'phone_number','password', 'email_verified')}),
         ('Profile Picture', {'fields': ('avatar',)}),
         ('Additional Info', {'fields': ('first_name', 'last_name','bio')}),
         ('Permissions', {'fields': ('is_staff', 'is_admin',)}),
@@ -93,13 +126,13 @@ admin.site.register(User, UserAdmin)
 
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'created_at', 'updated_at')  # Fields to display in the list view
+    list_display = ('id', 'user', 'service','created_at', 'updated_at')  # Fields to display in the list view
     list_filter = ('created_at', 'updated_at')  # Add filters for created_at and updated_at fields
     search_fields = ('user__username', 'feedback')  # Enable search by user username and feedback content
     readonly_fields = ('id', 'created_at', 'updated_at')  # Make certain fields read-only
     fieldsets = (
         (None, {
-            'fields': ('user', 'feedback')
+            'fields': ('user', 'service','feedback')
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),

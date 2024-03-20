@@ -20,6 +20,6 @@ def send_mail_with_template(mail_content, txt_template_path, html_template_path,
 
 def send_account_verification_mail(subject, first_name, verification_link, to_emails, from_email=settings.EMAIL_HOST_USER):
     mail_content = {'first_name': first_name, "verification_link":verification_link}
-    txt_template_path = "templates/verify_email.txt"
-    html_template_path = "templates/verify_otp.html"
+    txt_template_path = "notifications/templates/verify_email.txt"
+    html_template_path = "notifications/templates/verify_otp.html"
     send_mail_with_template(mail_content, txt_template_path, html_template_path, subject, from_email, to_emails)
