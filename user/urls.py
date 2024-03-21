@@ -20,9 +20,11 @@ urlpatterns = [
     path('provider-booking', provider_booking, name='provider_booking'),
     path('provider-list', provider_list, name='provider_list'),
     path('provider-details', provider_details, name='provider_details'),
+    path('provider-profile', ProviderProfileView.as_view(), name='provider_rofile'),
 
     # customer Routes
     path('customer-booking', customer_booking, name='customer_booking'),
-    path('customer_profile_creation', customer_profile_creation, name='customer_profile_creation'),
+    path('customer-profile', CustomerProfileView.as_view(), name='customer_rofile'),
+    
 
 ]

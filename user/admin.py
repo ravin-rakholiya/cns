@@ -101,7 +101,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'phone_number','password', 'email_verified')}),
         ('Profile Picture', {'fields': ('avatar',)}),
-        ('Additional Info', {'fields': ('first_name', 'last_name','bio', 'user_type')}),
+        ('Additional Info', {'fields': ('first_name', 'last_name','bio', 'user_type', 'gender', 'currency_code')}),
         ('Permissions', {'fields': ('is_staff', 'is_admin',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -164,6 +164,6 @@ class EmailVerificationAdmin(admin.ModelAdmin):
 admin.site.register(EmailVerification, EmailVerificationAdmin)
 
 
-
+admin.site.register(Address)
 
 

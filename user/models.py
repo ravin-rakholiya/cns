@@ -89,6 +89,8 @@ class Address(models.Model):
         return f"{self.id}"
 
 class User(AbstractBaseUser):
+    GENDER_CHOICES = (('male', 'Male'), ('female', 'Female'), ('other', 'Other'))
+    CURRENCY_CHOICES = (('cad', 'CAD'), ('usd', 'USD'))
     def save(self, *args, **kwargs):
         if self.pk == None:
             if not (self.email == None or self.email == ""):
@@ -119,7 +121,6 @@ class User(AbstractBaseUser):
                 self.email = self.email.lower()
 
         super(User, self).save(*args, **kwargs)
-
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, default = 1, null=False, blank=False)
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
@@ -137,6 +138,8 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
     bio = models.TextField(blank = True)
+    gender = models.CharField(choices=GENDER_CHOICES, default='male', max_length=50, null=False, blank=False)
+    currency_code = models.CharField(choices=CURRENCY_CHOICES, default='cad', max_length=50, null=False, blank=False)
     groups = models.ManyToManyField('auth.Group', blank=True, related_name="cutom_user_group")
     objects = UserManager()
 

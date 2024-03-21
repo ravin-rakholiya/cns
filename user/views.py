@@ -232,6 +232,178 @@ class UserSigninView(View):
             context = {"base_template": "base.html", "form": form}
             return render(request, self.template_name, context=context)
 
+class CustomerProfileView(View):
+    template_name = 'customer/customer-profile.html'
+    form_class = AccountSettingsForm
+
+    def get_initial_data(self):
+        user = User.objects.get(pk=self.request.user_id)
+        if user.address == None:
+            address = Address.objects.create()
+            user.address = address
+            user.save()
+        initial_data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'email': user.email,
+            'phone_number': user.phone_number,
+            'gender': user.gender,
+            'bio': user.bio if user.bio else '',
+            'add1': user.address.add1 if user.address is not None else '',
+            'add2': user.address.add2 if user.address is not None else '',
+            'country': user.address.country if user.address is not None else '',
+            'provision': user.address.provision if user.address is not None else '',
+            'city': user.address.city if user.address is not None else '',
+            'postal_code': user.address.postal_code if user.address is not None else '',
+            'currency_code': user.currency_code,
+            # 'profile_picture_upload': user.profile_picture_upload,  # Uncomment if you have this field in your model
+        }
+        return initial_data
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            form = self.form_class(initial=self.get_initial_data())
+            context = {
+                "base_template": "base.html",
+                "active_menu": "settings",
+                "user_name": "John Smith1",
+                "member_since": "Sep 2021",
+                "user_type": "customer",
+                "active_header": "customers",
+                "form": form,
+            }
+            return render(request, self.template_name, context=context)
+        except Exception as e:
+            context = {"base_template": "base.html", "form": LoginForm}
+            return render(request, 'login/login.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        context = {
+            "base_template": "base.html",
+            "active_menu": "settings",
+            "user_name": "John Smith1",
+            "member_since": "Sep 2021",
+            "user_type": "customer",
+            "active_header": "customers",
+            "form": form,
+        }
+        if form.is_valid():
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            username = form.cleaned_data["username"]
+            gender = form.cleaned_data["gender"]
+            add1 = form.cleaned_data["add1"]
+            add2 = form.cleaned_data["add2"]
+            country = form.cleaned_data["country"]
+            provision = form.cleaned_data["provision"]
+            city = form.cleaned_data["city"]
+            postal_code = form.cleaned_data["postal_code"]
+            currency_code = form.cleaned_data["currency_code"]
+            profile_picture_upload = form.cleaned_data["profile_picture_upload"]
+            user = User.objects.get(pk=self.request.user_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+            user.gender = gender
+            user.currency_code = currency_code
+            user.save()
+
+            address = user.address
+            address.add1 = add1
+            address.add2 = add2
+            address.country = country
+            address.provision = provision
+            address.city = city
+            address.postal_code = postal_code
+            address.save()
+            # Process the form data here if needed
+            context['message'] = 'Information Updated Successfully.'
+            return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
+        return render(request, self.template_name, context=context)
+
+
+class ProviderProfileView(View):
+    template_name = 'customer/customer-profile.html'
+    form_class = AccountSettingsForm
+
+    def get_initial_data(self):
+        user = User.objects.get(pk=self.request.user_id)
+        if user.address == None:
+            address = Address.objects.create()
+            user.address = address
+            user.save()
+        initial_data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'email': user.email,
+            'phone_number': user.phone_number,
+            'gender': user.gender,
+            'bio': user.bio if user.bio else '',
+            'add1': user.address.add1 if user.address is not None else '',
+            'add2': user.address.add2 if user.address is not None else '',
+            'country': user.address.country if user.address is not None else '',
+            'provision': user.address.provision if user.address is not None else '',
+            'city': user.address.city if user.address is not None else '',
+            'postal_code': user.address.postal_code if user.address is not None else '',
+            'currency_code': user.currency_code,
+            # 'profile_picture_upload': user.profile_picture_upload,  # Uncomment if you have this field in your model
+        }
+        return initial_data
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            form = self.form_class(initial=self.get_initial_data())
+            context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':'provider', "active_header":"providers", "form":form}
+            return render(request, self.template_name, context=context)
+        except Exception as e:
+            context = {"base_template": "base.html", "form": LoginForm}
+            return render(request, 'login/login.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':'provider', "active_header":"providers", "form":form}
+        if form.is_valid():
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            username = form.cleaned_data["username"]
+            gender = form.cleaned_data["gender"]
+            bio = form.cleaned_data["bio"]
+            add1 = form.cleaned_data["add1"]
+            add2 = form.cleaned_data["add2"]
+            country = form.cleaned_data["country"]
+            provision = form.cleaned_data["provision"]
+            city = form.cleaned_data["city"]
+            postal_code = form.cleaned_data["postal_code"]
+            currency_code = form.cleaned_data["currency_code"]
+            profile_picture_upload = form.cleaned_data["profile_picture_upload"]
+            user = User.objects.get(pk=self.request.user_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+            user.gender = gender
+            user.bio = bio
+            user.currency_code = currency_code
+            user.save()
+            address = user.address
+            address.add1 = add1
+            address.add2 = add2
+            address.country = country
+            address.provision = provision
+            address.city = city
+            address.postal_code = postal_code
+            address.save()
+            # Process the form data here if needed
+            context['message'] = 'Information Updated Successfully.'
+            return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
+        return render(request, self.template_name, context=context)
+
 
 def forgot_password(request):
     context = {"base_template":"base.html"}
@@ -274,28 +446,11 @@ def provider_details(request):
 
 
 def customer_booking(request):
-    print("232----", request.session['access_token'])
     context = {"base_template":"base.html",  "active_menu": "bookings",
         "user_name": "John Smith1",
         "member_since": "Sep 2021",'user_type':"customer", "active_header":"customers"}
     return render(request, 'customer/customer-booking.html', context=context)
 
-
-def customer_profile_creation(request):
-    if request.method == 'POST':
-        user_form = UserProfileForm(request.POST)
-        address_form = AddressForm(request.POST)
-        if user_form.is_valid() and address_form.is_valid():
-            user = user_form.save(commit=False)
-            address = address_form.save(commit=False)
-            user.save()
-            address.user = user
-            address.save()
-            return redirect('success_page')
-    else:
-        user_form = UserProfileForm()
-        address_form = AddressForm()
-    return render(request, 'customer/customer_profile_creation.html', {'user_form': user_form, 'address_form': address_form})
 
 
 def dashboard(request):
