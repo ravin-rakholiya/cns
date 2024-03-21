@@ -16,7 +16,7 @@ from django.contrib import messages
 from user.templatetags.custom_message import custom_message
 from user.scripts import *
 from notifications.scripts import *
-
+from user.utils import *
 
 def index(request):
     context = {"base_template":"base.html"}
@@ -28,8 +28,15 @@ class ChooseRegisterView(View):
     base_template = 'base.html'
 
     def get(self, request, *args, **kwargs):
-        context = {'base_template': self.base_template}
-        return render(request, self.template_name, context=context)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            context = {'base_template': self.base_template}
+            return render(request, self.template_name, context=context)
 
 
 class ProviderSignupView(View):
@@ -38,9 +45,17 @@ class ProviderSignupView(View):
     form_class = ProviderSignupForm
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        context = {'base_template': self.base_template, 'form': form}
-        return render(request, self.template_name, context=context)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            form = self.form_class()
+            context = {'base_template': self.base_template, 'form': form}
+            return render(request, self.template_name, context=context)
+
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -78,8 +93,15 @@ class VerifyEmailView(View):
     base_template = 'base.html'
 
     def get(self, request, *args, **kwargs):
-        context = {"base_template": self.base_template}
-        return render(request, self.template_name, context=context)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            context = {"base_template": self.base_template}
+            return render(request, self.template_name, context=context)
 
 
 class VerifyEmailSuccessView(View):
@@ -87,24 +109,30 @@ class VerifyEmailSuccessView(View):
     base_template = 'base.html'
 
     def get(self, request, *args, **kwargs):
-        context = {"base_template": self.base_template}
-        verification_token = request.GET.get('token', None)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            context = {"base_template": self.base_template}
+            verification_token = request.GET.get('token', None)
+            if not verification_token:
+                context['verification_token'] = False
+                return render(request, self.template_name, context=context)
 
-        if not verification_token:
-            context['verification_token'] = False
+            email_verification = get_object_or_404(EmailVerification, verification_token=verification_token)
+            user = email_verification.email_to
+            if user and email_verification.validate_email(user, verification_token):
+                if not user.email_verified:
+                    user.email_verified = True
+                    user.save()
+                    context['verification_token'] = True
+            else:
+                context['verification_token'] = False
+
             return render(request, self.template_name, context=context)
-
-        email_verification = get_object_or_404(EmailVerification, verification_token=verification_token)
-        user = email_verification.email_to
-        if user and email_verification.validate_email(user, verification_token):
-            if not user.email_verified:
-                user.email_verified = True
-                user.save()
-                context['verification_token'] = True
-        else:
-            context['verification_token'] = False
-
-        return render(request, self.template_name, context=context)
 
 class UserSignupView(View):
     template_name = 'register/user_signup.html'
@@ -112,9 +140,16 @@ class UserSignupView(View):
     form_class = UserSignupForm
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        context = {"base_template": self.base_template, "form": form}
-        return render(request, self.template_name, context=context)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            form = self.form_class()
+            context = {"base_template": self.base_template, "form": form}
+            return render(request, self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -154,8 +189,16 @@ class UserSigninView(View):
     form_class = LoginForm
 
     def get(self, request, *args, **kwargs):
-        context = {"base_template": self.base_template, "form": self.form_class}
-        return render(request, self.template_name, context=context)
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            if user.user_type.user_type=="provider":
+                return redirect('user:provider_booking')
+            return redirect('user:customer_booking')
+        except Exception as e:
+            context = {"base_template": self.base_template, "form": self.form_class}
+            return render(request, self.template_name, context=context)
+        
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -176,9 +219,12 @@ class UserSigninView(View):
                 return render(request, self.template_name, context=context)
             if user.check_password(password):
                 token = user.get_tokens_for_user()
-                print("179----", token)
+                store_in_session(request, 'refresh_token', token['refresh'])
+                store_in_session(request, 'access_token', token['access'])
                 context['success_message'] = "SignIn successful!"
-                return redirect('info_pages:about_us')
+                if user.user_type.user_type=="provider":
+                    return redirect('user:provider_booking')
+                return redirect('user:customer_booking')
             else:
                 context = {"base_template": "base.html", "form": form, "alert":"User does not exist with this credentials."}
                 return render(request, self.template_name, context=context)
@@ -209,6 +255,11 @@ def provider_services(request):
     return render(request, 'provider/provider-services.html', context=context)
 
 def provider_booking(request):
+    try:
+        user_id = request.user_id
+    except Exception as e:
+        context = {"base_template": 'base.html', "form": LoginForm}
+        return render(request, 'login/login.html', context=context)
     context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
     return render(request, 'provider/provider-booking.html', context=context)
 
@@ -223,6 +274,7 @@ def provider_details(request):
 
 
 def customer_booking(request):
+    print("232----", request.session['access_token'])
     context = {"base_template":"base.html",  "active_menu": "bookings",
         "user_name": "John Smith1",
         "member_since": "Sep 2021",'user_type':"customer", "active_header":"customers"}
@@ -247,6 +299,7 @@ def customer_profile_creation(request):
 
 
 def dashboard(request):
+    
     services = [
         {
             "link": "service-details.html",
@@ -282,4 +335,5 @@ def dashboard(request):
             # "old_price": "$55.00"
         },
     ]
-    return render(request, 'index.html', {'services': services})
+    context = {"base_template":"base.html", 'services': services}
+    return render(request, 'index.html', context=context)
