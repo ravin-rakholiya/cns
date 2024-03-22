@@ -19,15 +19,23 @@ def service_booking(request):
         pass
     return render(request, 'services/service-booking.html', context=context)
 
-def service_detail(request):
-    context = {"base_template":"base.html",}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'services/service-detail.html', context=context)
+class ServiceDetailView(View):
+    template_name = 'services/service-detail.html'
+    base_template = 'base.html'
+
+    def get(self, request, provider_service):
+        context = {'base_template': self.base_template}
+        try:
+            user = User.objects.get(pk=request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+            provider_service = ProviderService.objects.get(pk = provider_service)
+            service_availability = ProviderAvailability.objects.filter(service = provider_service)
+            context['provider_service'] = provider_service
+            context['service_availability'] = service_availability
+        except Exception as e:
+            pass
+        return render(request, self.template_name, context=context)
 
 def service_payment(request):
     context = {"base_template":"base.html", "active_step":"payment", "active_header":"providers"}
@@ -59,7 +67,6 @@ class ServiceListView(View):
             user_id = request.user_id
             user = User.objects.get(pk = user_id)
             context['user_type'] = user.user_type.user_type
-            print("57----", user_id)
             provider_services = ProviderService.objects.filter(provider = user)
             context['provider_services'] = provider_services
             context['user'] = user

@@ -42,7 +42,7 @@
                                     <div class="service-list">
                                         <div class="service-cont">
                                             <div class="service-cont-img">
-                                                <a href="http://127.0.0.1:8000/service/service-detail">
+                                                <a href="{% url 'service:service_detail' provider_service.id %}">
                                                     <img class="img-fluid serv-img" alt="Service Image"
                                                         src="{{provider_service.picture.url}}">
                                                 </a>
