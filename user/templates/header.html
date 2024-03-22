@@ -114,12 +114,13 @@
                             
                         </li>
                {% else %}
-               <li class="login-link">
-                  <a href="http://127.0.0.1:8000/user/choose_register">Register</a>
-               </li>
-               <li class="login-link">
-                  <a href="http://127.0.0.1:8000/user/user_signin">Login</a>
-               </li>
+                  <li class="nav-item">
+                      <a class="nav-link header-reg" href="http://127.0.0.1:8000/user/choose_register">Register</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link header-login" href="http://127.0.0.1:8000/user/user_signin"><i
+                              class="fa-regular fa-circle-user me-2"></i>Login</a>
+                  </li>
                {% endif %}
          </ul>
       </nav>
