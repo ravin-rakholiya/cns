@@ -26,6 +26,7 @@
                </a>
                <a id="menu_close" class="menu-close" href="javascript:void(0);"> <i class="fas fa-times"></i></a>
             </div>
+
             <ul class="main-nav">
                <li class="megamenu {% if active_header == 'home' %}active{% endif %}">
 
@@ -61,7 +62,7 @@
                </li>
                {% else %}
                   <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
-                     <a href="javascript:void(0);">Services <i class="fas fa-chevron-down"></i></a>
+                     <a href="javascript:void(0);">Services 1<i class="fas fa-chevron-down"></i></a>
                      <ul class="submenu">
                         <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
                         <li><a href="http://127.0.0.1:8000/user/provider-list">Provider List</a></li>
@@ -86,7 +87,6 @@
                      </ul>
                   </li>
                {% endif %}
-
 
                <li class="megamenu {% if active_header == 'about' %}active{% endif %}"><a href="http://127.0.0.1:8000/info/about-us">About</a></li>
                <li class="megamenu {% if active_header == 'contactus' %}active{% endif %}"><a href="http://127.0.0.1:8000/info/contact-us">Contact Us</a></li>

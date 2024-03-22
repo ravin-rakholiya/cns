@@ -65,9 +65,11 @@ class AccountSettingsForm(forms.Form):
 
 
 class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(
-        attrs={'class': 'form-control', 'placeholder': 'johndoe@example.com'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'johndoe@example.com'}), required=True)
 
+class ReSetPasswordForm(forms.Form):
+    password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
 
 class UserProfileForm(forms.ModelForm):
     GENDER_CHOICES = (

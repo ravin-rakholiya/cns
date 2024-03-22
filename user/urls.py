@@ -10,9 +10,8 @@ urlpatterns = [
     path('verify-email', VerifyEmailView.as_view(), name='verify_email'),
     path('verify-mail', VerifyEmailSuccessView.as_view(), name='verify_email_successful'),
     path('user_signup', UserSignupView.as_view(), name='user_signup'),
-
-    path('forgot_password', forgot_password, name='forgot_password'),
-    path('reset_password', reset_password, name='reset_password'),
+    path('forgot-password', ForgotPasswordView.as_view(), name='forgot_password'),
+    path('reset-password', ResetPasswordView.as_view(), name='reset_password'),
     path('user_signin', UserSigninView.as_view(), name='user_signin'),
 
     # Provider Routes

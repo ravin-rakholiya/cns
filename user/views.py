@@ -461,18 +461,77 @@ class ProviderProfileView(View):
             return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
         return render(request, self.template_name, context=context)
 
+class ForgotPasswordView(View):
+    template_name = 'login/forgot-password.html'
+    form_class = ForgotPasswordForm
 
-def forgot_password(request):
-    context = {"base_template":"base.html"}
-    if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {"base_template": "base.html", "form": form}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        context = {"base_template": "base.html", "form": form}
         if form.is_valid():
             email = form.cleaned_data['email']
-            return redirect('user:reset_password', context=context)  # Redirect to password reset page or any other page
-    else:
-        form = ForgotPasswordForm()
-    context['form']=form
-    return render(request, 'login/forgot_password.html', context=context)
+            verification_token = generate_verification_token()
+            verification_link = generate_user_account_verification_link(verification_token, "user/reset-password?token=")
+            user = User.objects.get(email = email)
+            EmailVerification.objects.get_or_create(email_to = user, verification_token = verification_token)
+            send_account_verification_mail("Reset your password to login in your USH Account", user.first_name, verification_link, email)
+            # Redirect to a success page or return a success message
+            context['success_message'] = "Verify your Email to Reset the Passowrd!"
+            context["alert"] = "Verify your Email to Reset the Passowrd!"
+            return redirect('user:user_signin')  # Adjust the URL name as needed
+        return render(request, self.template_name, context=context)
+
+
+class ResetPasswordView(View):
+    template_name = 'login/reset-password.html'
+    form_class = ReSetPasswordForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {"base_template": "base.html", "form": form}
+        verification_token = request.GET.get('token', None)
+        alert = request.GET.get('alert', None)
+        print("500---",alert)
+        if not verification_token:
+            return redirect('user:user_signin')
+        try:
+            if alert == "password_does_not_match":
+                context['alert'] = "Password Does not Match."
+                return render(request, self.template_name, context=context)    
+        except Exception as e:
+            return redirect('user:user_signin') 
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        print("502----", args)
+        print("503----", kwargs)
+        verification_token = request.POST.get('token')
+        context = {"base_template": "base.html", "form": form}
+        print("503-----",form.is_valid())
+        if form.is_valid():
+            password = form.cleaned_data['password1']
+            confirm_password = form.cleaned_data['password2']
+            
+            print("510----", confirm_password)
+            if password!=confirm_password:
+                context['alert'] = "Password Does not Match."
+                return redirect('http://127.0.0.1:8000/user/reset-password?alert=password_does_not_match&token='+verification_token)
+            email_verification = get_object_or_404(EmailVerification, verification_token=verification_token)
+            user = email_verification.email_to
+            if user and email_verification.validate_email(user, verification_token):
+                user.set_password(password)
+                user.save()
+                return redirect('user:user_signin')
+            else:
+                return redirect('user:user_signin') 
+        return render(request, self.template_name, context=context)
+
 
 
 def reset_password(request):
