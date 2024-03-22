@@ -26,6 +26,9 @@ class DashboardView(View):
     base_template = 'base.html'
 
     def get(self, request, *args, **kwargs):
+        action = request.GET.get('action', None)
+        if action=='logout':
+            request.session.pop('access_token', None)
         context = {}
         try:
             services = [
@@ -69,13 +72,10 @@ class DashboardView(View):
             try:
                 user = User.objects.get(pk=request.user_id)
                 context['user_type'] = user.user_type.user_type
-                print("68----",user.user_type.user_type)
             except Exception as e:
-                print("73---",e)
                 pass
             return render(request, self.template_name, context=context)
         except Exception as e:
-            print("78----", e)
             context = {'base_template': self.base_template}
             return render(request, self.template_name, context=context)
 
@@ -287,6 +287,7 @@ class UserSigninView(View):
         else:
             context = {"base_template": "base.html", "form": form}
             return render(request, self.template_name, context=context)
+
 
 class CustomerProfileView(View):
     template_name = 'customer/customer-profile.html'
