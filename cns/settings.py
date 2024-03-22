@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Define the media root directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
+print("38----", MEDIA_ROOT)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -180,10 +180,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
 
 
 
