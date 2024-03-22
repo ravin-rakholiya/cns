@@ -20,7 +20,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 2
-print(ROOT_DIR)
+
 APPS_DIR = ROOT_DIR.path('cns')
 env = environ.Env()
 env_file = str(ROOT_DIR.path('.env'))
@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Define the media root directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-print("38----", MEDIA_ROOT)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

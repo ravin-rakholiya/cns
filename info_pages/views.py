@@ -12,7 +12,9 @@ class AboutUsView(View):
         context = {"base_template":self.base_template, "active_header":"about"}
         try:
             user_id = request.user_id
-            context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
         except Exception as e:
             pass
         return render(request, self.template_name, context=context)
@@ -26,7 +28,9 @@ class ContactUsView(View):
         context = {"base_template":"base.html", "active_header":"contactus"}
         try:
             user_id = request.user_id
-            context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
         except Exception as e:
             pass
         return render(request, self.template_name, context=context)
@@ -39,7 +43,9 @@ class PrivacyPolicyView(View):
         context = {"base_template":"base.html"}
         try:
             user_id = request.user_id
-            context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
         except Exception as e:
             pass
         return render(request, self.template_name, context=context)
@@ -52,7 +58,9 @@ class TermsAndConditionsView(View):
         context = {"base_template":"base.html"}
         try:
             user_id = request.user_id
-            context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
         except Exception as e:
             pass
         return render(request, self.template_name, context=context)

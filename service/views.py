@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-
+from django.views import View
 from service.models import *
 from django.shortcuts import render, redirect
 from service.forms import ServicePostForm
@@ -14,6 +14,7 @@ def service_booking(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'services/service-booking.html', context=context)
@@ -23,6 +24,7 @@ def service_detail(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'services/service-detail.html', context=context)
@@ -32,6 +34,7 @@ def service_payment(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'services/service-booking-payment.html', context=context)
@@ -41,24 +44,37 @@ def service_boooking_done(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'services/service-booking-done.html', context=context)
 
-def service_list(request):
-    context = {"base_template":"base.html", "active_header":"providers"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-    except Exception as e:
-        pass
-    return render(request, 'services/service-list.html', context=context)
+class ServiceListView(View):
+    template_name = 'services/service-list.html'
+    base_template = 'base.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {"base_template":self.base_template, "active_header":"providers"}
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            print("57----", user_id)
+            provider_services = ProviderService.objects.filter(provider = user)
+            context['provider_services'] = provider_services
+            context['user'] = user
+        except Exception as e:
+            return redirect('user:user_signin')
+        return render(request, self.template_name, context=context)
+
+
 
 def service_create(request):
     context = {"base_template":"base.html", "active_header":"providers"}
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'services/service-create.html', context=context)

@@ -72,6 +72,7 @@ class DashboardView(View):
             try:
                 user = User.objects.get(pk=request.user_id)
                 context['user_type'] = user.user_type.user_type
+                context['user'] = user
             except Exception as e:
                 pass
             return render(request, self.template_name, context=context)
@@ -139,6 +140,7 @@ class ProviderSignupView(View):
             send_account_verification_mail("Verify your email to create your USH Account",first_name, verification_link, email)
             # Redirect to a success page or return a success message
             context['success_message'] = "Signup successful!"
+            context['user'] = user
             return redirect('user:verify_email')  # Redirect to the index page
 
         
@@ -232,6 +234,7 @@ class UserSignupView(View):
             send_account_verification_mail("Verify your email to create your USH Account",first_name, verification_link, email)
             # Redirect to a success page or return a success message
             context['success_message'] = "Signup successful!"
+            context['user'] = user
             # Perform actions with form data (e.g., save to database)
             return redirect('user:verify_email')  # Change this to your desired success URL
         else:
@@ -278,11 +281,13 @@ class UserSigninView(View):
                 store_in_session(request, 'refresh_token', token['refresh'])
                 store_in_session(request, 'access_token', token['access'])
                 context['success_message'] = "SignIn successful!"
+                context['user'] = user
                 if user.user_type.user_type=="provider":
                     return redirect('user:provider_booking')
                 return redirect('user:customer_booking')
             else:
                 context = {"base_template": "base.html", "form": form, "alert":"User does not exist with this credentials."}
+                context['user'] = user
                 return render(request, self.template_name, context=context)
         else:
             context = {"base_template": "base.html", "form": form}
@@ -332,6 +337,7 @@ class CustomerProfileView(View):
                 "active_header": "customers",
                 "form": form,
             }
+            context['user'] = user
             return render(request, self.template_name, context=context)
         except Exception as e:
             # Redirect to login page if there's an error
@@ -379,6 +385,7 @@ class CustomerProfileView(View):
             address.save()
             # Process the form data here if needed
             context['message'] = 'Information Updated Successfully.'
+            context['user'] = user
             return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
         return render(request, self.template_name, context=context)
 
@@ -418,6 +425,7 @@ class ProviderProfileView(View):
             user = User.objects.get(pk = user_id)
             form = self.form_class(initial=self.get_initial_data())
             context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':user.user_type.user_type, "active_header":"customers", "form":form}
+            context['user'] = user
             return render(request, self.template_name, context=context)
         except Exception as e:
             context = {"base_template": "base.html", "form": LoginForm}
@@ -458,6 +466,7 @@ class ProviderProfileView(View):
             address.save()
             # Process the form data here if needed
             context['message'] = 'Information Updated Successfully.'
+            context['user'] = user
             return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
         return render(request, self.template_name, context=context)
 
@@ -509,16 +518,11 @@ class ResetPasswordView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        print("502----", args)
-        print("503----", kwargs)
         verification_token = request.POST.get('token')
         context = {"base_template": "base.html", "form": form}
-        print("503-----",form.is_valid())
         if form.is_valid():
             password = form.cleaned_data['password1']
             confirm_password = form.cleaned_data['password2']
-            
-            print("510----", confirm_password)
             if password!=confirm_password:
                 context['alert'] = "Password Does not Match."
                 return redirect('http://127.0.0.1:8000/user/reset-password?alert=password_does_not_match&token='+verification_token)
@@ -534,20 +538,12 @@ class ResetPasswordView(View):
 
 
 
-def reset_password(request):
-    context = {"base_template":"base.html"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-    except Exception as e:
-        pass
-    return render(request, 'login/reset_password.html', context=context)
-
 def provider_services(request):
     context = {"base_template":"provider-base.html", 'active_menu': 'services', "active_header":"providers"}
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'provider/provider-services.html', context=context)
@@ -557,6 +553,7 @@ def provider_booking(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         context = {"base_template": 'base.html', "form": LoginForm}
         return render(request, 'login/login.html', context=context)
@@ -568,6 +565,7 @@ def provider_list(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'provider/provider-list.html', context=context)
@@ -577,6 +575,7 @@ def provider_details(request):
     try:
         user = User.objects.get(pk=request.user_id)
         context['user_type'] = user.user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'provider/provider-details.html', context=context)
@@ -589,6 +588,7 @@ def customer_booking(request):
     try:
         user_id = request.user_id
         context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+        context['user'] = user
     except Exception as e:
         pass
     return render(request, 'customer/customer-booking.html', context=context)
