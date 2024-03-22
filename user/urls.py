@@ -4,7 +4,7 @@ from user.views import *
 app_name = 'user'
 
 urlpatterns = [
-    path('', dashboard, name='dashboard'),
+    # path('', dashboard, name='dashboard'),
     path('choose_register', ChooseRegisterView.as_view(), name='choose_register'),  # Add this line
     path('provider_signup', ProviderSignupView.as_view(), name='provide_signup'),
     path('verify-email', VerifyEmailView.as_view(), name='verify_email'),

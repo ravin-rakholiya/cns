@@ -17,11 +17,67 @@ from user.templatetags.custom_message import custom_message
 from user.scripts import *
 from notifications.scripts import *
 from user.utils import *
+from django.views.generic import TemplateView
 
-def index(request):
-    context = {"base_template":"base.html"}
-    return render(request, 'base.html', context=context)
 
+
+class DashboardView(View):
+    template_name = 'index.html'
+    base_template = 'base.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        try:
+            services = [
+            {
+                "link": "service-details.html",
+                "image": "../../static/assets/img/services/service-01.jpg",
+                "category": "Plumbing",
+                "provider_image": "../../static/assets/img/profiles/avatar-05.jpg",
+                "title": "Pipe Installation & Repair",
+                "location": "New York, NY, USA",
+                "rating": "4.8",
+                "price": "$30.00",
+                # "old_price": "$45.00"
+            },
+            {
+                "link": "service-details.html",
+                "image": "../../static/assets/img/services/service-02.jpg",
+                "category": "Electrical",
+                "provider_image": "../../static/assets/img/profiles/avatar-06.jpg",
+                "title": "Electrical Installation",
+                "location": "Los Angeles, CA, USA",
+                "rating": "4.9",
+                "price": "$50.00",
+                "old_price": "$60.00"
+            },
+            {
+                "link": "service-details.html",
+                "image": "../../static/assets/img/services/service-03.jpg",
+                "category": "Painting",
+                "provider_image": "../../static/assets/img/profiles/avatar-07.jpg",
+                "title": "House Painting",
+                "location": "Chicago, IL, USA",
+                "rating": "4.7",
+                "price": "$40.00",
+                    # "old_price": "$55.00"
+                },
+            ]
+            context['services'] = services
+            context['base_template'] = 'base.html'
+            context['active_header'] = 'home'
+            try:
+                user = User.objects.get(pk=request.user_id)
+                context['user_type'] = user.user_type.user_type
+                print("68----",user.user_type.user_type)
+            except Exception as e:
+                print("73---",e)
+                pass
+            return render(request, self.template_name, context=context)
+        except Exception as e:
+            print("78----", e)
+            context = {'base_template': self.base_template}
+            return render(request, self.template_name, context=context)
 
 class ChooseRegisterView(View):
     template_name = 'register/choose_signup.html'
@@ -264,21 +320,21 @@ class CustomerProfileView(View):
     def get(self, request, *args, **kwargs):
         try:
             user_id = request.user_id
-            user = User.objects.get(pk = user_id)
+            user = User.objects.get(pk=user_id)
             form = self.form_class(initial=self.get_initial_data())
             context = {
                 "base_template": "base.html",
                 "active_menu": "settings",
                 "user_name": "John Smith1",
                 "member_since": "Sep 2021",
-                "user_type": "customer",
+                "user_type": user.user_type.user_type,
                 "active_header": "customers",
                 "form": form,
             }
             return render(request, self.template_name, context=context)
         except Exception as e:
-            context = {"base_template": "base.html", "form": LoginForm}
-            return render(request, 'login/login.html', context=context)
+            # Redirect to login page if there's an error
+            return redirect('user:user_signin')
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -287,7 +343,7 @@ class CustomerProfileView(View):
             "active_menu": "settings",
             "user_name": "John Smith1",
             "member_since": "Sep 2021",
-            "user_type": "customer",
+            "user_type": user.user_type.user_type,
             "active_header": "customers",
             "form": form,
         }
@@ -360,7 +416,7 @@ class ProviderProfileView(View):
             user_id = request.user_id
             user = User.objects.get(pk = user_id)
             form = self.form_class(initial=self.get_initial_data())
-            context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':'provider', "active_header":"providers", "form":form}
+            context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':user.user_type.user_type, "active_header":"customers", "form":form}
             return render(request, self.template_name, context=context)
         except Exception as e:
             context = {"base_template": "base.html", "form": LoginForm}
@@ -368,7 +424,7 @@ class ProviderProfileView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':'provider', "active_header":"providers", "form":form}
+        context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':user.user_type.user_type, "active_header":"customers", "form":form}
         if form.is_valid():
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
@@ -420,75 +476,63 @@ def forgot_password(request):
 
 def reset_password(request):
     context = {"base_template":"base.html"}
+    try:
+        user = User.objects.get(pk=request.user_id)
+        context['user_type'] = user.user_type.user_type
+    except Exception as e:
+        pass
     return render(request, 'login/reset_password.html', context=context)
 
 def provider_services(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'services', 'user_type':"customer", "active_header":"providers"}
+    context = {"base_template":"provider-base.html", 'active_menu': 'services', "active_header":"providers"}
+    try:
+        user = User.objects.get(pk=request.user_id)
+        context['user_type'] = user.user_type.user_type
+    except Exception as e:
+        pass
     return render(request, 'provider/provider-services.html', context=context)
 
 def provider_booking(request):
+    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
     try:
-        user_id = request.user_id
+        user = User.objects.get(pk=request.user_id)
+        context['user_type'] = user.user_type.user_type
     except Exception as e:
         context = {"base_template": 'base.html', "form": LoginForm}
         return render(request, 'login/login.html', context=context)
-    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
     return render(request, 'provider/provider-booking.html', context=context)
 
 
 def provider_list(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
+    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"services"}
+    try:
+        user = User.objects.get(pk=request.user_id)
+        context['user_type'] = user.user_type.user_type
+    except Exception as e:
+        pass
     return render(request, 'provider/provider-list.html', context=context)
 
 def provider_details(request):
     context = {"base_template":"provider-base.html", "active_header":"providers"}
+    try:
+        user = User.objects.get(pk=request.user_id)
+        context['user_type'] = user.user_type.user_type
+    except Exception as e:
+        pass
     return render(request, 'provider/provider-details.html', context=context)
 
 
 def customer_booking(request):
     context = {"base_template":"base.html",  "active_menu": "bookings",
         "user_name": "John Smith1",
-        "member_since": "Sep 2021",'user_type':"customer", "active_header":"customers"}
+        "member_since": "Sep 2021", "active_header":"customers"}
+    try:
+        user_id = request.user_id
+        context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
+    except Exception as e:
+        pass
     return render(request, 'customer/customer-booking.html', context=context)
 
 
 
-def dashboard(request):
-    
-    services = [
-        {
-            "link": "service-details.html",
-            "image": "../../static/assets/img/services/service-01.jpg",
-            "category": "Plumbing",
-            "provider_image": "../../static/assets/img/profiles/avatar-05.jpg",
-            "title": "Pipe Installation & Repair",
-            "location": "New York, NY, USA",
-            "rating": "4.8",
-            "price": "$30.00",
-            # "old_price": "$45.00"
-        },
-        {
-            "link": "service-details.html",
-            "image": "../../static/assets/img/services/service-02.jpg",
-            "category": "Electrical",
-            "provider_image": "../../static/assets/img/profiles/avatar-06.jpg",
-            "title": "Electrical Installation",
-            "location": "Los Angeles, CA, USA",
-            "rating": "4.9",
-            "price": "$50.00",
-            "old_price": "$60.00"
-        },
-        {
-            "link": "service-details.html",
-            "image": "../../static/assets/img/services/service-03.jpg",
-            "category": "Painting",
-            "provider_image": "../../static/assets/img/profiles/avatar-07.jpg",
-            "title": "House Painting",
-            "location": "Chicago, IL, USA",
-            "rating": "4.7",
-            "price": "$40.00",
-            # "old_price": "$55.00"
-        },
-    ]
-    context = {"base_template":"base.html", 'services': services}
-    return render(request, 'index.html', context=context)
+

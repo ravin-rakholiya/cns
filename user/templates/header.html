@@ -29,35 +29,62 @@
             <ul class="main-nav">
                <li class="megamenu {% if active_header == 'home' %}active{% endif %}">
 
-               <a href="http://127.0.0.1:8000/user/">Home</a></li>
-               <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
-                  <a href="javascript:void(0);">Services <i class="fas fa-chevron-down"></i></a>
-                  <ul class="submenu">
-                     <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
-                     <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li>
-                  </ul>
-               </li>
+               <a href="http://127.0.0.1:8000">Home</a></li>
+
+               
                {% if user_type == 'customer' %}
-               <li class="has-submenu {% if active_header == 'customers' %}active{% endif %}">
-                            <a href="javascript:void(0);">Customers <i class="fas fa-chevron-down"></i></a>
-                            <ul class="submenu">
-                                <li><a href="http://127.0.0.1:8000/user/customer-booking">Dashboard</a></li>
-                                <li class="active"><a href="http://127.0.0.1:8000/user/customer-booking">Booking</a></li>
-                                <li><a href="http://127.0.0.1:8000/user/provider-list">Providers List</a></li>
-                                <li><a href="customer-profile.html">Settings</a></li>
-                            </ul>
-                        </li>
-               {% else %}
+                  <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
+                     <a href="javascript:void(0);">Services <i class="fas fa-chevron-down"></i></a>
+                     <ul class="submenu">
+                        <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
+                        <li><a href="http://127.0.0.1:8000/user/provider-list">Provider List</a></li>
+                        <!-- <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li> -->
+                     </ul>
+                  </li>
+                  <li class="has-submenu {% if active_header == 'customers' %}active{% endif %}">
+                      <a href="javascript:void(0);">Customers <i class="fas fa-chevron-down"></i></a>
+                      <ul class="submenu">
+                          <li class="active"><a href="http://127.0.0.1:8000/user/customer-booking">Booking</a></li>
+                          <li><a href="http://127.0.0.1:8000/user/customer-profile">Settings</a></li>
+                      </ul>
+                  </li>
+               {% elif user_type == 'provider' %}
                <li class="has-submenu {% if active_header == 'providers' %}active{% endif %}">
                   <a href="javascript:void(0);">Providers <i class="fas fa-chevron-down"></i></a>
                   <ul class="submenu">
                      <!-- <li><a href="provider-dashboard.html">Dashboard</a></li> -->
-                     <li><a href="http://127.0.0.1:8000/user/provider-services">My Services</a></li>
-                     <li><a href="http://127.0.0.1:8000/user/provider-booking">Booking</a></li>
-
-
+                     <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li>
+                     <li><a href="http://127.0.0.1:8000/user/provider-booking">My Bookings</a></li>
+                     <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
+                     <li><a href="http://127.0.0.1:8000/user/provider-details">Portpholio</a></li>
                   </ul>
                </li>
+               {% else %}
+                  <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
+                     <a href="javascript:void(0);">Services <i class="fas fa-chevron-down"></i></a>
+                     <ul class="submenu">
+                        <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
+                        <li><a href="http://127.0.0.1:8000/user/provider-list">Provider List</a></li>
+                        <!-- <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li> -->
+                     </ul>
+                  </li>
+                  <li class="has-submenu {% if active_header == 'customers' %}active{% endif %}">
+                      <a href="javascript:void(0);">Customers <i class="fas fa-chevron-down"></i></a>
+                      <ul class="submenu">
+                          <li class="active"><a href="http://127.0.0.1:8000/user/customer-booking">Booking</a></li>
+                          <li><a href="http://127.0.0.1:8000/user/customer-profile">Settings</a></li>
+                      </ul>
+                  </li>
+                  <li class="has-submenu {% if active_header == 'providers' %}active{% endif %}">
+                     <a href="javascript:void(0);">Providers <i class="fas fa-chevron-down"></i></a>
+                     <ul class="submenu">
+                        <!-- <li><a href="provider-dashboard.html">Dashboard</a></li> -->
+                        <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li>
+                        <li><a href="http://127.0.0.1:8000/user/provider-booking">My Bookings</a></li>
+                        <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
+                        <li><a href="http://127.0.0.1:8000/user/provider-details">ortfolio</a></li>
+                     </ul>
+                  </li>
                {% endif %}
 
 
