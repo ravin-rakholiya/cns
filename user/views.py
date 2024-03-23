@@ -563,8 +563,6 @@ def provider_services(request):
 class ProviderBookingView(View):
     template_name = 'provider/provider-booking.html'
 
-    
-
     def get(self, request, *args, **kwargs):
         context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
         try:
@@ -580,9 +578,6 @@ class ProviderBookingView(View):
                 if ratings:
                     service_ratings[booking.id] = generate_string(ratings.last().rate)
             context['service_ratings'] = service_ratings
-            # # Instantiate the ReviewForm and include it in the context
-            # review_form = RatingForm()
-            # context['review_form'] = review_form
         except Exception as e:
             context = {"base_template": 'base.html', "form": LoginForm}
             return HttpResponseRedirect(reverse('user:user_signin'))
@@ -598,19 +593,25 @@ def provider_booking(request):
         context['user'] = user
     except Exception as e:
         context = {"base_template": 'base.html', "form": LoginForm}
-        return render(request, 'login/login.html', context=context)
+        return HttpResponseRedirect(reverse('user:user_signin'))
     return render(request, 'provider/provider-booking.html', context=context)
 
 
-def provider_list(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"services"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'provider/provider-list.html', context=context)
+class ProviderListView(View):
+    template_name = 'provider/provider-list.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "services"}
+        try:
+            user = get_object_or_404(User, pk=request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+            provider_services = ProviderService.objects.all()
+            context['provider_services'] = provider_services
+        except Exception as e:
+            context = {"base_template": 'base.html', "form": LoginForm}
+            return HttpResponseRedirect(reverse('user:user_signin'))
+        return render(request, self.template_name, context=context)
 
 def provider_details(request):
     context = {"base_template":"provider-base.html", "active_header":"providers"}

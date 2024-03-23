@@ -65,8 +65,12 @@
                                         </div>
                                         <div class="service-action">
                                             <h6>${{provider_service.price}}</h6>
-                                            <a href="http://127.0.0.1:8000/service/service-booking"
-                                                class="btn btn-secondary">Book Now</a>
+                                            {% if user %}
+                                                {% if user.user_type.user_type == "customer" %}
+                                                    <a href="http://127.0.0.1:8000/service/service-booking"
+                                                        class="btn btn-secondary">Book Now</a>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                     {% endfor %}
