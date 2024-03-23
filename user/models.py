@@ -12,7 +12,7 @@ from math import sin, cos, sqrt, atan2, radians
 import string
 import uuid
 from django.utils import timezone
-
+from django.core.validators import MinValueValidator
 
 def avatar_path(instance, filename):
     return 'avatar/{}/{}'.format(
@@ -138,6 +138,7 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
     bio = models.TextField(blank = True)
+    experience = models.FloatField(default=0, validators=[MinValueValidator(0)])
     gender = models.CharField(choices=GENDER_CHOICES, default='male', max_length=50, null=False, blank=False)
     currency_code = models.CharField(choices=CURRENCY_CHOICES, default='cad', max_length=50, null=False, blank=False)
     groups = models.ManyToManyField('auth.Group', blank=True, related_name="cutom_user_group")
@@ -205,3 +206,24 @@ class Feedback(models.Model):
 
     def __str__(self):
         return str(self.user.username)
+
+class ProviderGetInTouch(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_contacts', null=False, blank=False)
+    provider = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name='recipient_contacts', blank=False)
+    full_name = models.CharField(max_length=80, blank=False, null=False, )
+    email = models.EmailField(blank=True, null=True, db_index=True)
+    phone_number = models.CharField(max_length=20, null=False, blank=False)
+    message = models.TextField(blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.user.username)
+
+class UserSystemVisit(models.Model):
+    created_at = models.DateTimeField(timezone.now)
+    daily_count = models.IntegerField(default=0)
+    total_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.created_at)

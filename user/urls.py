@@ -18,7 +18,7 @@ urlpatterns = [
     path('provider-services', provider_services, name='provider_services'),
     path('provider-booking', ProviderBookingView.as_view(), name='provider_booking'),
     path('provider-list', ProviderListView.as_view(), name='provider_list'),
-    path('provider-details', provider_details, name='provider_details'),
+    path('provider-details/<int:provider_id>', ProviderDetailsView.as_view(), name='provider_details'),
     path('provider-profile', ProviderProfileView.as_view(), name='provider_rofile'),
 
     # customer Routes

@@ -101,7 +101,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'phone_number','password', 'email_verified')}),
         ('Profile Picture', {'fields': ('avatar',)}),
-        ('Additional Info', {'fields': ('first_name', 'last_name','bio', 'user_type', 'gender', 'currency_code')}),
+        ('Additional Info', {'fields': ('first_name', 'last_name','bio', 'experience', 'user_type', 'gender', 'currency_code')}),
         ('Permissions', {'fields': ('is_staff', 'is_admin',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -142,13 +142,28 @@ class FeedbackAdmin(admin.ModelAdmin):
 admin.site.register(Feedback, FeedbackAdmin)
 
 
+class ProviderGetInTouchAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'provider', 'full_name', 'email', 'phone_number', 'created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at')
+    search_fields = ('user__username', 'provider__username', 'full_name', 'email', 'phone_number')
+    readonly_fields = ('id', 'created_at', 'updated_at')
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'provider', 'full_name', 'email', 'phone_number', 'message')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)  # Make the timestamps collapsible
+        }),
+    )
 
+admin.site.register(ProviderGetInTouch, ProviderGetInTouchAdmin)
 
 class EmailVerificationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email_to', 'verification_token', 'validity')  # Fields to display in the list view
-    list_filter = ('validity',)  # Add filter for the validity field
-    search_fields = ('email_to__username', 'verification_token')  # Enable search by user username and verification token
-    readonly_fields = ('id', 'validity')  # Make certain fields read-only
+    list_display = ('id', 'email_to', 'verification_token', 'validity')
+    list_filter = ('validity',)
+    search_fields = ('email_to__username',)
+    readonly_fields = ('id', 'validity')
     fieldsets = (
         (None, {
             'fields': ('email_to', 'verification_token')
@@ -164,6 +179,24 @@ class EmailVerificationAdmin(admin.ModelAdmin):
 admin.site.register(EmailVerification, EmailVerificationAdmin)
 
 
-admin.site.register(Address)
+
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('id', 'add1', 'city', 'address_type', 'provision', 'country', 'postal_code', 'latitude', 'longitude', 'created_at', 'updated_at')
+    list_filter = ('address_type', 'provision', 'country', 'created_at', 'updated_at')
+    search_fields = ('add1', 'city', 'postal_code', 'latitude', 'longitude')
+    readonly_fields = ('id', 'created_at', 'updated_at')
+    fieldsets = (
+        (None, {
+            'fields': ('add1', 'add2', 'city', 'address_type', 'provision', 'country', 'postal_code', 'latitude', 'longitude')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+admin.site.register(UserSystemVisit)
+
+admin.site.register(Address, AddressAdmin)
 
 

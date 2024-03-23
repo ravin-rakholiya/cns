@@ -22,7 +22,8 @@
 	                    <div class="col-lg-3 col-sm-6">
 	                        <div class="providerset">
 	                            <div class="providerset-img">
-	                                <a href="http://127.0.0.1:8000/user/provider-details">
+	                            	
+	                                <a href="{% url 'user:provider_details' provider_id=provider_service.provider.id %}">
 	                                	{% if provider_service.picture %}
 	                                    	<img src="{{provider_service.picture.url}}" alt="img">
 	                                    {% else %}
@@ -34,7 +35,7 @@
 	                            <div class="providerset-content">
 	                                <div class="providerset-price">
 	                                    <div class="providerset-name">
-	                                        <h4><a href="http://127.0.0.1:8000/user/provider-details">{{provider_service.provider.first_name}}</a><i class="fa fa-check-circle"
+	                                        <h4><a href="{% url 'user:provider_details' provider_id=provider_service.provider.id %}">{{provider_service.provider.first_name}}</a><i class="fa fa-check-circle"
 	                                                aria-hidden="true"></i></h4>
 	                                        <span>{{provider_service.category.name}}</span>
 	                                    </div>

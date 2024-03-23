@@ -57,7 +57,7 @@
                      <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li>
                      <li><a href="http://127.0.0.1:8000/user/provider-booking">My Bookings</a></li>
                      <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
-                     <li><a href="http://127.0.0.1:8000/user/provider-details">Portpholio</a></li>
+                     <li><a href="{% url 'user:provider_details' provider_id=provider_id %}">My Details</a></li>
                   </ul>
                </li>
                {% else %}
@@ -83,7 +83,7 @@
                         <li><a href="http://127.0.0.1:8000/service/service-create">Create Service</a></li>
                         <li><a href="http://127.0.0.1:8000/user/provider-booking">My Bookings</a></li>
                         <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
-                        <li><a href="http://127.0.0.1:8000/user/provider-details">ortfolio</a></li>
+                        <li><li><a href="{% url 'user:provider_details' provider_id=3 %}">My Details</a>
                      </ul>
                   </li>
                {% endif %}
