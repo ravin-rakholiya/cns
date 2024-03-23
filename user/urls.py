@@ -16,7 +16,7 @@ urlpatterns = [
 
     # Provider Routes
     path('provider-services', provider_services, name='provider_services'),
-    path('provider-booking', provider_booking, name='provider_booking'),
+    path('provider-booking', ProviderBookingView.as_view(), name='provider_booking'),
     path('provider-list', provider_list, name='provider_list'),
     path('provider-details', provider_details, name='provider_details'),
     path('provider-profile', ProviderProfileView.as_view(), name='provider_rofile'),

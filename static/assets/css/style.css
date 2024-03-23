@@ -7725,7 +7725,7 @@ html.menu-opened body {
 
 .sidebar {
     background-color: #fff;
-    bottom: 0;
+    bottom: 600px;
     left: 0;
     margin-top: 0;
     position: fixed;
@@ -27288,3 +27288,153 @@ td.ant-table-column-sort {
     border-radius: 5px; /* Rounded corners */
     margin-bottom: 10px; /* Bottom margin */
 }
+
+/* Toast Styles */
+#toastContainer {
+    position: relative; /* Ensure the container is positioned */
+    width: 500px; /* Adjust width as needed */
+    height: 100px; /* Adjust height as needed */
+    overflow: hidden; /* Hide overflow content */
+}
+
+.toast {
+    position: absolute; /* Position within the container */
+    bottom: 10px;
+    right: 100px;
+    background-color: #4c40ed;
+    color: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's on top of other elements within the container */
+}
+
+.toast.show {
+    display: inline-grid;
+    align-content: center;
+    justify-content: center;
+}
+.toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toast-header button.close {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+}
+
+
+
+.modal-toggle {
+    display: none;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 10000;
+    max-width: 80%; /* Adjust the width as needed */
+    max-height: 80%; /* Adjust the height as needed */
+    overflow: auto; /* Enable scrolling if content exceeds modal height */
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.modal-toggle:checked + .modal-overlay {
+    display: block;
+}
+
+.modal-toggle:checked + .modal-overlay .modal {
+    display: contents;
+    backface-visibility: revert-layer;
+}
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%; /* Adjust the width as needed */
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: var(--bs-modal-bg);
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+}
+
+.emoji-rating {
+    display: inline-block;
+    font-size: 24px;
+}
+
+.emoji-rating label {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-right: 10px;
+}
+
+.emoji-rating label:hover {
+    transform: scale(1.2);
+}
+
+.emoji-rating input[type="radio"]:checked + label {
+background-color: #f0f0f0;
+border-radius: 50%;
+padding: 4px;
+border-color: #4c40ed;
+}
+
+
+/* Tooltip styles */
+.emoji-rating label::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    border-color: #4c40ed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 8px;
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.emoji-rating label:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+/*.hidden-radio {
+    display: none;
+}*/

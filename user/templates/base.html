@@ -8,12 +8,29 @@
     {% include 'head.html' %}
     <body class="provider-body">
 {% endif %}
-
+    
     <div class="main-wrapper">
+
+
         {% include 'header.html' %}
-        {% block body_block %}{% endblock %}
+        {% if alert %}
+        <div id="toastContainer">
+     <div class="toast" id="myToast">
+
+        <div class="toast-body">
+
+            {{alert}}
+        </div>
+    </div>
+    </div>
+        {% endif %}
+
+        {% block body_block %}
+       
+        {% endblock %}
         {% include 'footer.html' %}
     </div>
+    
     <div class="mouse-cursor cursor-outer"></div>
     <div class="mouse-cursor cursor-inner"></div>
   </div>
@@ -26,4 +43,5 @@
     </svg>
   </div>
 </body>
+
 

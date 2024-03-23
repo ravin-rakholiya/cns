@@ -11,3 +11,9 @@ def generate_verification_token():
 
 def generate_user_account_verification_link(token, target):
 	return f"{env('BASE_URL')}{target}{token}"
+
+def generate_string(n):
+	result = ""
+	for i in range(n):
+	    result += str(i)
+	return result

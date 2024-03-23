@@ -71,6 +71,18 @@ class ReSetPasswordForm(forms.Form):
     password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
 
+
+class RatingForm(forms.Form):
+    RATING_CHOICES = (
+        ('5', '😊 Highest'),
+        ('4', '😐 Good'),
+        ('3', '😃 Moderate'),
+        ('2', '😄 Limited'),
+        ('1', '😠 Lowest'),
+    )
+    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.RadioSelect(attrs={'class': 'hidden-radio'}))
+    comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Please write your review'}))
+    
 class UserProfileForm(forms.ModelForm):
     GENDER_CHOICES = (
         ('Male', 'Male'),

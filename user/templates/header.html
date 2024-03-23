@@ -62,7 +62,7 @@
                </li>
                {% else %}
                   <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
-                     <a href="javascript:void(0);">Services 1<i class="fas fa-chevron-down"></i></a>
+                     <a href="javascript:void(0);">Services<i class="fas fa-chevron-down"></i></a>
                      <ul class="submenu">
                         <li><a href="http://127.0.0.1:8000/service/service-list">Service List</a></li>
                         <li><a href="http://127.0.0.1:8000/user/provider-list">Provider List</a></li>
@@ -101,10 +101,19 @@
                <li class="nav-item dropdown has-arrow account-item">
                             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                                 <div class="user-infos">
+                                 {% if user.avatar %}
                                     <span class="user-img">
+
                                         <img src="{{user.avatar.url}}" class="rounded-circle"
                                             alt="User Image">
                                     </span>
+                                 {% else %}
+                                  <span class="user-img">
+
+                                        <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" class="rounded-circle"
+                                            alt="User Image">
+                                    </span>
+                                 {% endif %}
                                     <div class="user-info">
                                         <h6>{{user.username}}</h6>
                                         <p>{{user.user_type.user_type}}</p>
