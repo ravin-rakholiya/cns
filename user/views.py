@@ -74,7 +74,7 @@ class DashboardView(View):
                 context['user_type'] = user.user_type.user_type
                 context['user'] = user
             except Exception as e:
-                pass
+                return HttpResponseRedirect(reverse('user:customer_booking'))
             return render(request, self.template_name, context=context)
         except Exception as e:
             context = {'base_template': self.base_template}
@@ -331,8 +331,8 @@ class CustomerProfileView(View):
             context = {
                 "base_template": "base.html",
                 "active_menu": "settings",
-                "user_name": "John Smith1",
-                "member_since": "Sep 2021",
+                "user_name": user.username,
+                "member_since": user.created_at,
                 "user_type": user.user_type.user_type,
                 "active_header": "customers",
                 "form": form,
@@ -588,26 +588,7 @@ class ProviderBookingView(View):
             return HttpResponseRedirect(reverse('user:user_signin'))
         return render(request, self.template_name, context=context)
 
-    # def post(self, request, *args, **kwargs):
-    #     form = RatingForm(request.POST)
-    #     if form.is_valid():
-
-
-    #         user_id = request.user_id
-    #         user = User.objects.get(pk=user_id)
-    #         provider_booking_id = request.POST.get('provider_booking_id')
-    #         service_booking = ServiceBooking.objects.get(pk=provider_booking_id)
-    #         rating = form.cleaned_data['rating']
-    #         comment = form.cleaned_data['comment']
-    #         rating = ServiceRating.objects.create(user=user, service = service_booking, rate=float(rating), comment=comment)
-
-    #         # Redirect to a success URL after form submission
-    #         return HttpResponseRedirect(reverse('user:provider_booking'))  # Replace 'success_url' with your actual success URL
-
-    #     # If form is not valid, render the form again with validation errors
-    #     context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
-    #     context['review_form'] = form  # Pass the form instance with validation errors to the template
-    #     return render(request, self.template_name, context=context)
+    
 
 def provider_booking(request):
     context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
@@ -642,17 +623,52 @@ def provider_details(request):
     return render(request, 'provider/provider-details.html', context=context)
 
 
-def customer_booking(request):
-    context = {"base_template":"base.html",  "active_menu": "bookings",
-        "user_name": "John Smith1",
-        "member_since": "Sep 2021", "active_header":"customers"}
-    try:
-        user_id = request.user_id
-        context['user_type'] = User.objects.get(pk=user_id).user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'customer/customer-booking.html', context=context)
+class CustomerBookingView(View):
+    template_name = 'customer/customer-booking.html'
+    base_template = 'base.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk=user_id)
+            context = {"base_template": self.base_template, "active_menu": "bookings",
+                   "active_header": "customers", "user_name": user.username, "member_since": user.created_at, "user_type": user.user_type.user_type,}
+        
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+            customer_bookings = ServiceBooking.objects.filter(user = user).order_by('-appointment_time')
+            context['customer_bookings'] = customer_bookings
+
+            service_ratings = {}
+            for customer_booking in customer_bookings:
+                if customer_booking.status == "completed":
+                    service_rating = ServiceRating.objects.filter(service = customer_booking)
+                    if service_rating:
+                        service_ratings[customer_booking.id] = generate_string(service_rating.last().rate)
+            context['service_ratings'] = service_ratings
+
+        except Exception as e:
+            context = {"base_template": 'base.html', "form": LoginForm}
+            return HttpResponseRedirect(reverse('user:user_signin'))
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            user_id = request.user_id
+            user = User.objects.get(pk=user_id)
+            customer_booking_id = request.POST.get('customer_booking_id')
+            service_booking = ServiceBooking.objects.get(pk=customer_booking_id)
+            rating = form.cleaned_data['rating']
+            comment = form.cleaned_data['comment']
+            rating = ServiceRating.objects.get_or_create(user=user, service = service_booking, rate=float(rating), comment=comment)
+            # Redirect to a success URL after form submission
+            return HttpResponseRedirect(reverse('user:customer_booking'))  # Replace 'success_url' with your actual success URL
+
+        # If form is not valid, render the form again with validation errors
+        context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
+        context['review_form'] = form  # Pass the form instance with validation errors to the template
+        return render(request, self.template_name, context=context)
 
 
 

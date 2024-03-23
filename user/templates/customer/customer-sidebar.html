@@ -3,7 +3,15 @@
     <div class="settings-widget">
         <div class="settings-header">
             <div class="settings-img">
-                <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                {% if user %}
+                    {% if user.avatar %}
+                        <img src="{{user.avatar.url}}" alt="user">
+                    {% else %}
+                        <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                    {% endif %}
+                {% else %}
+                        <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                {% endif %}
             </div>
             <h6>{{ user_name }}</h6>
             <p>Member Since {{ member_since }}</p>

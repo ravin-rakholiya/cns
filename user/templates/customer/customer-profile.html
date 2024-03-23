@@ -18,7 +18,15 @@
             <!-- Replace this with your actual profile picture upload functionality -->
             <div class="pro-picture">
                 <div class="pro-img">
-                    <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                     {% if user %}
+                    {% if user.avatar %}
+                        <img src="{{user.avatar.url}}" alt="user">
+                    {% else %}
+                        <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                    {% endif %}
+                {% else %}
+                        <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                {% endif %}
                 </div>
                 <div class="pro-info">
                     <div class="d-flex">

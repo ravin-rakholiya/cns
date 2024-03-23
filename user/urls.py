@@ -22,7 +22,7 @@ urlpatterns = [
     path('provider-profile', ProviderProfileView.as_view(), name='provider_rofile'),
 
     # customer Routes
-    path('customer-booking', customer_booking, name='customer_booking'),
+    path('customer-booking', CustomerBookingView.as_view(), name='customer_booking'),
     path('customer-profile', CustomerProfileView.as_view(), name='customer_rofile'),
     
 
