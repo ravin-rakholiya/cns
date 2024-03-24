@@ -342,7 +342,8 @@ class CustomerProfileView(View):
             return HttpResponseRedirect(reverse('user:user_signin'))
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
+        user = User.objects.get(pk=self.request.user_id)
         context = {
             "base_template": "base.html",
             "active_menu": "settings",
@@ -364,8 +365,9 @@ class CustomerProfileView(View):
             city = form.cleaned_data["city"]
             postal_code = form.cleaned_data["postal_code"]
             currency_code = form.cleaned_data["currency_code"]
-            profile_picture_upload = form.cleaned_data["profile_picture_upload"]
-            user = User.objects.get(pk=self.request.user_id)
+            profile_picture = request.FILES.get('profile_picture_upload')
+            if profile_picture:
+                user.avatar = profile_picture
             user.first_name = first_name
             user.last_name = last_name
             user.username = username
