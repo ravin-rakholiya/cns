@@ -686,7 +686,7 @@ class CustomerBookingView(View):
             context['user'] = user
             customer_bookings = ServiceBooking.objects.filter(user = user).order_by('-appointment_time')
             context['customer_bookings'] = customer_bookings
-
+            context['provider_id'] = ""
             service_ratings = {}
             for customer_booking in customer_bookings:
                 if customer_booking.status == "completed":
@@ -709,6 +709,7 @@ class CustomerBookingView(View):
             service_booking = ServiceBooking.objects.get(pk=customer_booking_id)
             rating = form.cleaned_data['rating']
             comment = form.cleaned_data['comment']
+            context['provider_id'] = ""
             rating = ServiceRating.objects.get_or_create(user=user, service = service_booking, rate=float(rating), comment=comment)
             # Redirect to a success URL after form submission
             return HttpResponseRedirect(reverse('user:customer_booking'))  # Replace 'success_url' with your actual success URL

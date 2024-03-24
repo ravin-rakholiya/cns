@@ -20,61 +20,6 @@
             <div class="col-md-12">
 
                 {% for provider_booking in provider_bookings %}
-                <!-- <input type="checkbox" id="modal-toggle" class="modal-toggle"> -->
-                <!-- <div class="modal-overlay">
-                    <div class="modal">
-                        <label for="modal-toggle" class="close-btn">×</label>
-                        <div class="modal-content">
-                            <h2>Write A Review</h2>
-                           
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" id="provider_booking_id" name="provider_booking_id" value="{{ provider_booking.id }}">
-                                <div class="write-review">
-                                    <div class="review-add">
-                                        <div class="rev-img">
-                                            <img src="{{provider_booking.service.picture.url}}" alt="image">
-                                        </div>
-                                        <div class="rev-info">
-                                            <h6>{{provider_booking.service.title|capfirst}}</h6>
-                                            <p>{{provider_booking.address.add1}} {{provider_booking.address.add2}},
-                                                {{provider_booking.address.city}},
-                                                {{provider_booking.address.provision}},
-                                                {{provider_booking.address.country}},
-                                                {{provider_booking.address.postal_code}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="emoji-rating">
-                                        <input type="radio" id="id_emoji_5" name="rating" value="5" style="display: none;">
-                                        <label for="id_emoji_5" title="5" data-tooltip="Highest"
-                                            style="color: #FFD700;">😊</label>
-                                        <input type="radio" id="id_emoji_4" name="rating" value="4" style="display: none;">
-                                        <label for="id_emoji_4" title="4" data-tooltip="Good"
-                                            style="color: #FFA500;">😐</label>
-                                        <input type="radio" id="id_emoji_3" name="rating" value="3" style="display: none;">
-                                        <label for="id_emoji_3" title="3" data-tooltip="Moderate"
-                                            style="color: #FF7F50;">😃</label>
-                                        <input type="radio" id="id_emoji_2" name="rating" value="2" style="display: none;">
-                                        <label for="id_emoji_2" title="2" data-tooltip="Limited"
-                                            style="color: #FF6347;">😄</label>
-                                        <input type="radio" id="id_emoji_1" name="rating" value="1" style="display: none;">
-                                        <label for="id_emoji_1" title="1" data-tooltip="Lowest"
-                                            style="color: #FF4500;">😠</label>
-                                    </div>
-                                    <div class="form-group form-info">
-                                        <label class="col-form-label">Write your Comment</label>
-                                        <textarea class="form-control" id="id_comment" name="comment" rows="4"
-                                            placeholder="Please write your review"></textarea>
-                                    </div>
-                                    <div class="modal-submit text-end">
-                                        <label for="modal-toggle" class="btn btn-primary">Close</label>
-                                        <button type="submit" class="btn btn-primary">Send</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="booking-list">
                     <div class="booking-widget">
                         <div class="booking-img">
@@ -134,15 +79,12 @@
                         </div>
                     </div>
                     {% if provider_booking.status == 'completed' %}
-                    <!-- <div class="booking-action action-popup-btn"> -->
                     <div class="rating text-center">
                         {% for rating in service_ratings|get_by_key:provider_booking.id %}
                             {% for star in rating %}
                                 <i class="fas fa-star filled" style="color: gold;"></i>
                             {% endfor %}
                         {% endfor %}
-                       <!--  <label for="modal-toggle" class="btn btn-primary"><i class="fa-solid fa-star"></i>Add
-                            Review</label> -->
                     </div>
                     {% endif %}
                 </div>
