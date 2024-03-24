@@ -27438,3 +27438,19 @@ border-color: #4c40ed;
 /*.hidden-radio {
     display: none;
 }*/
+
+.password-wrapper {
+        position: relative;
+    }
+
+    .eye-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    #password-field {
+        padding-right: 30px; /* Space for the eye icon */
+    }

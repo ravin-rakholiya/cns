@@ -11,7 +11,7 @@ class ProviderSignupForm(forms.Form):
     last_name = forms.CharField(max_length=100, label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Last Name', 'required': True}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'johndoe@example.com', 'required': True}))
     phone = forms.CharField(max_length=15, label='Phone Number', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(256) 789-6253', 'required': True}))
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))   
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'id': 'password-field', 'required': True}))   
 
 class UserSignupForm(forms.Form):
     first_name = forms.CharField(label='First Name', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your First Name', 'required': True}))
@@ -68,8 +68,8 @@ class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'johndoe@example.com'}), required=True)
 
 class ReSetPasswordForm(forms.Form):
-    password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'placeholder': '*************', 'required': True}))
+    password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'id': 'password-1','placeholder': '*************', 'required': True}))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control pass-input', 'id': 'password-2','placeholder': '*************', 'required': True}))
 
 
 class RatingForm(forms.Form):

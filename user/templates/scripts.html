@@ -32,4 +32,28 @@
     window.onload = function () {
         showToast();
     };
+    function togglePasswordVisibility() {
+      var x = document.getElementById("password-field");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    function togglePassword1Visibility() {
+      var x = document.getElementById("password-1");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    function togglePassword2Visibility() {
+      var x = document.getElementById("password-2");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
 </script>

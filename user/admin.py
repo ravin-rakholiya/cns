@@ -195,8 +195,15 @@ class AddressAdmin(admin.ModelAdmin):
         }),
     )
 
-admin.site.register(UserSystemVisit)
-
 admin.site.register(Address, AddressAdmin)
+
+class UserSystemVisitAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'daily_count', 'total_count')
+    readonly_fields = ('created_at', 'daily_count', 'total_count')
+    search_fields = ('created_at',)
+    date_hierarchy = 'created_at'
+
+admin.site.register(UserSystemVisit, UserSystemVisitAdmin)
+
 
 
