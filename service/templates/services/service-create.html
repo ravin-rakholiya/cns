@@ -3,11 +3,32 @@
 {% if base_template == 'base.html' %}
     {% include 'head.html' %}
     {% include 'header.html' %}
+        {% if alert %}
+        <div id="toastContainer">
+     <div class="toast" id="myToast">
+
+        <div class="toast-body">
+
+            {{alert}}
+        </div>
+    </div>
+    </div>
+        {% endif %}
     <body class="base-body">
 {% elif base_template == 'provider-base.html' %}
     {% include 'head.html' %}
     {% include 'header.html' %}
-    <body class="provider-body">
+        {% if alert %}
+        <div id="toastContainer">
+     <div class="toast" id="myToast">
+
+        <div class="toast-body">
+
+            {{alert}}
+        </div>
+    </div>
+    </div>
+        {% endif %}
 {% endif %}
  <div class="breadcrumb-bar">
             <div class="container">
@@ -78,11 +99,10 @@
                                                     <div class="sub-title">
                                                         <h6>Service Information</h6>
                                                     </div>
-                                                    {{initial_data.category}}
                                                     <div class="form-group">
                                                         <label class="col-form-label">Service Title</label>
                                                         <input type="text" id="title" name="title" class="form-control"
-                                                            placeholder="Enter Service Name" value="{{ title }}">
+                                                            placeholder="Enter Service Name" value="{{initial_data.title}}">
                                                             {% if form.title.errors %}
                                                                     <div class="text-danger">
                                                                         {% for error in form.title.errors %}
@@ -98,7 +118,7 @@
                                                         <select name="category" class="select">
                                                             <option>Select Category</option>
                                                             {% for cat in category %}
-                                                                <option>{{ cat.name }}</option>
+                                                                <option {% if cat.name == initial_data.category %} selected {% endif %}>{{ cat.name }}</option>
                                                             {% endfor %}
                                                         </select>
                                                         {% if form.category.errors %}
@@ -116,7 +136,7 @@
                                                         <div class=from-icon> 
                                                                 <label class="col-form-label d-block">Price (Per Hour) $<span
                                                                 class="brief-bio float-end">Set 0$ for free</span></label>
-                                                            <input type="number" name="price" class="form-control" min="0.0" step="1.10" value="0.0">
+                                                            <input type="number" name="price" class="form-control" min="0.0" step="1.10" value="{{ initial_data.price }}">
                                                             {% if form.price.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.price.errors %}
@@ -132,7 +152,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group mb-0">
                                                         <label class="col-form-label">Description</label>
-                                                        <textarea class="form-control ck-editor" name="description"></textarea>
+                                                        <textarea class="form-control ck-editor" name="description">{{ initial_data.description }}</textarea>
                                                         {% if form.description.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.description.errors %}
@@ -169,7 +189,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="monday_from_time" placeholder="From" oninput="validatemondayTime()">
+                                                                                        name="monday_from_time" placeholder="From" oninput="validatemondayTime()" value="{{ initial_data.monday_from_time|time:'H:i' }}">
                                                                                         {% if form.monday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.monday_from_time.errors %}
@@ -185,7 +205,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="monday_to_time" placeholder="To" oninput="validatemondayTime()">
+                                                                                        name="monday_to_time" placeholder="To" oninput="validatemondayTime()" value="{{initial_data.monday_to_time|time:'H:i'}}">
                                                                                         {% if form.monday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.monday_to_time.errors %}
@@ -209,7 +229,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="tuesday_from_time" placeholder="From" oninput="validatetuesdayTime()">
+                                                                                        name="tuesday_from_time" placeholder="From" oninput="validatetuesdayTime()" value="{{initial_data.tuesday_from_time|time:'H:i'}}">
                                                                                         {% if form.tuesday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.tuesday_from_time.errors %}
@@ -225,7 +245,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="tuesday_to_time" placeholder="To" oninput="validatetuesdayTime()">
+                                                                                        name="tuesday_to_time" placeholder="To" oninput="validatetuesdayTime()" value="{{initial_data.tuesday_to_time|time:'H:i'}}">
                                                                                         {% if form.tuesday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.tuesday_to_time.errors %}
@@ -249,7 +269,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="wednesday_from_time" placeholder="From" oninput="validatewedTime()">
+                                                                                        name="wednesday_from_time" placeholder="From" oninput="validatewedTime()" value="{{initial_data.wednesday_from_time|time:'H:i'}}">
                                                                                         {% if form.wednesday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.wednesday_from_time.errors %}
@@ -265,7 +285,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="wednesday_to_time" placeholder="To" oninput="validatewedTime()">
+                                                                                        name="wednesday_to_time" placeholder="To" oninput="validatewedTime()" value="{{initial_data.wednesday_to_time|time:'H:i'}}">
                                                                                         {% if form.wednesday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.wednesday_to_time.errors %}
@@ -289,7 +309,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="thursday_from_time" placeholder="From" oninput="validatethursTime()">
+                                                                                        name="thursday_from_time" placeholder="From" oninput="validatethursTime()" value="{{initial_data.thursday_from_time|time:'H:i'}}">
                                                                                         {% if form.thursday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.thursday_from_time.errors %}
@@ -306,7 +326,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="thursday_to_time" placeholder="To" oninput="validatethursTime()">
+                                                                                        name="thursday_to_time" placeholder="To" oninput="validatethursTime()" value="{{initial_data.thursday_to_time|time:'H:i'}}">
                                                                                         {% if form.thursday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.thursday_to_time.errors %}
@@ -331,7 +351,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="friday_from_time" placeholder="From" oninput="validatefridayTime()">
+                                                                                        name="friday_from_time" placeholder="From" oninput="validatefridayTime()" value="{{initial_data.friday_from_time|time:'H:i'}}">
                                                                                         {% if form.friday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.friday_from_time.errors %}
@@ -347,7 +367,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="friday_to_time" placeholder="To" oninput="validatefridayTime()">
+                                                                                        name="friday_to_time" placeholder="To" oninput="validatefridayTime()" value="{{initial_data.friday_to_time|time:'H:i'}}">
                                                                                         {% if form.friday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.friday_to_time.errors %}
@@ -371,7 +391,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="saturday_from_time" placeholder="From" oninput="validatesaturTime()">
+                                                                                        name="saturday_from_time" placeholder="From" oninput="validatesaturTime()" value="{{initial_data.saturday_from_time|time:'H:i'}}">
                                                                                         {% if form.saturday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.saturday_from_time.errors %}
@@ -387,7 +407,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control timepicker"
-                                                                                        name="saturday_to_time" placeholder="To" oninput="validatesaturTime()">
+                                                                                        name="saturday_to_time" placeholder="To" oninput="validatesaturTime()" value="{{initial_data.saturday_to_time|time:'H:i'}}">
                                                                                         {% if form.saturday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.saturday_to_time.errors %}
@@ -411,7 +431,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="sunday_from_time" placeholder="From" oninput="validatesunTime()">
+                                                                                        name="sunday_from_time" placeholder="From" oninput="validatesunTime()" value="{{initial_data.sunday_from_time|time:'H:i'}}">
                                                                                         {% if form.sunday_from_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.sunday_from_time.errors %}
@@ -428,7 +448,7 @@
                                                                                 <div class="form-icon">
                                                                                     <input type="time"
                                                                                         class="form-control"
-                                                                                        name="sunday_to_time" placeholder="From" oninput="validatesunTime()">
+                                                                                        name="sunday_to_time" placeholder="From" oninput="validatesunTime()" value="{{initial_data.sunday_to_time|time:'H:i'}}">
                                                                                         {% if form.sunday_to_time.errors %}
                                                                                             <div class="text-danger">
                                                                                                 {% for error in form.sunday_to_time.errors %}
@@ -460,7 +480,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Address 1</label>
                                                         <input type="text" class="form-control"
-                                                            name="add1" placeholder="Enter Your Address 1">
+                                                            name="add1" placeholder="Enter Your Address 1" value="{{initial_data.add1}}">
                                                             {% if form.add1.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.add1.errors %}
@@ -474,7 +494,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Address 2</label>
                                                         <input type="text" class="form-control"
-                                                            name="add2" placeholder="Enter Your Address 2">
+                                                            name="add2" placeholder="Enter Your Address 2" value="{{initial_data.add2}}">
                                                             {% if form.add2.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.add2.errors %}
@@ -489,7 +509,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">City</label>
                                                         <input type="text" class="form-control"
-                                                            name="city" placeholder="Enter Your City">
+                                                            name="city" placeholder="Enter Your City" value="{{initial_data.city}}">
                                                             {% if form.city.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.city.errors %}
@@ -504,7 +524,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Provision</label>
                                                         <input type="text" class="form-control"
-                                                            name="provision" placeholder="Enter Your State">
+                                                            name="provision" placeholder="Enter Your State" value="{{initial_data.provision}}">
                                                             {% if form.provision.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.provision.errors %}
@@ -518,7 +538,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Country</label>
-                                                        <input type="text" class="form-control" name="country" placeholder="Enter Country">
+                                                        <input type="text" class="form-control" name="country" placeholder="Enter Country" value="{{initial_data.country}}">
                                                         {% if form.country.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.country.errors %}
@@ -533,7 +553,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Pincode</label>
                                                         <input type="text" class="form-control"
-                                                            name="pincode" placeholder="Enter Your Pincode">
+                                                            name="pincode" placeholder="Enter Your Pincode" value="{{initial_data.pincode}}">
                                                             {% if form.pincode.errors %}
                                                                 <div class="text-danger">
                                                                     {% for error in form.pincode.errors %}
@@ -558,12 +578,15 @@
                                                 <h6>Gallery</h6>
                                             </div>
 
-                                           
+                                           <img id="previewImage" src="{% if initial_data.image %}{{ initial_data.image.url }}{% endif %}" alt="Preview Image" style="max-width: 400px; max-height: 400px; {% if not initial_data.image %}display: none;{% endif %}">
                                             <div class="file-upload">
+
                                                 <img id="imagePreview" src="{% static 'assets/img/icons/upload-icon.svg' %}" alt="image">
                                                 <h6>Drag & drop files or <span>Browse</span></h6>
                                                 <p>Supported only Image Formats</p>
                                                 <input type="file" id="fileInput" name="image" accept="image/*" onchange="displayImage()">
+                                                
+
                                                 {% if form.image.errors %}
                                                     <div class="text-danger">
                                                         {% for error in form.image.errors %}

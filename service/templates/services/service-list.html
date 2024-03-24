@@ -68,8 +68,11 @@
                                         <div class="service-cont">
                                             <div class="service-cont-img">
                                                 <a href="{% url 'service:service_detail' provider_service.id %}">
-                                                    <img class="img-fluid serv-img" alt="Service Image"
-                                                        src="{{provider_service.picture.url}}">
+                                                    {% if provider_service.picture %}
+                                                        <img class="img-fluid serv-img" alt="Service Image" src="{{ provider_service.picture.url }}">
+                                                    {% else %}
+                                                        <img class="img-fluid serv-img" alt="Default Service Image" src="{% static 'assets/img/services/service-ban-01.jpg' %}">
+                                                    {% endif %}
                                                 </a>
                                             </div>
                                             <div class="service-cont-info">

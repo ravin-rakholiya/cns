@@ -14,3 +14,4 @@ get-pip.py
 **/.DS_Store
 cns/media/**
 media/avatar/**
+media/service/**

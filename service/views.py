@@ -7,6 +7,7 @@ from service.forms import *
 from user.models import *
 from service.forms import *
 from service.scripts import *
+from django.urls import reverse_lazy, reverse
 
 def service_booking(request):
     context = {"base_template":"base.html",
@@ -138,7 +139,7 @@ class ServiceCreateView(View):
     active_header = 'providers'
     form_class = ServiceCreateForm
 
-    def get_initial_data(self, provider_service=None):
+    def get_initial_data(self, provider_service=None, service_avalibilities=None):
         initial_data = {}
         if provider_service:
             initial_data = {
@@ -146,28 +147,17 @@ class ServiceCreateView(View):
                 'category': provider_service.category.name,
                 'price': provider_service.price,
                 'description': provider_service.desc,
-                'monday_from_time': '08:00',
-                'monday_to_time': '18:00',
-                'tuesday_from_time': '09:00',
-                'tuesday_to_time': '17:00',
-                'wednesday_from_time': '08:30',
-                'wednesday_to_time': '17:30',
-                'thursday_from_time': '08:00',
-                'thursday_to_time': '16:00',
-                'friday_from_time': '10:00',
-                'friday_to_time': '18:00',
-                'saturday_from_time': '09:00',
-                'saturday_to_time': '17:00',
-                'sunday_from_time': '10:30',
-                'sunday_to_time': '16:30',
-                'add1': '123 Sample Street',
-                'add2': 'Apt 101',
-                'country': 'Sample Country',
-                'city': 'Sample City',
-                'provision': 'Sample State',
-                'pincode': '12345',
-                # 'profile_picture_upload': user.profile_picture_upload
+                'add1': provider_service.address.add1,
+                'add2': provider_service.address.add2,
+                'country': provider_service.address.country,
+                'city': provider_service.address.city,
+                'provision': provider_service.address.provision,
+                'pincode': provider_service.address.postal_code,
+                'image': provider_service.picture
             }
+            initial_data = set_availability_initial_data(initial_data, provider_service)
+
+
         return initial_data
 
     def get(self, request, *args, **kwargs):
@@ -180,41 +170,36 @@ class ServiceCreateView(View):
             context['user'] = user
             if provider_service_id is not None:
                 provider_service = ProviderService.objects.get(pk=provider_service_id, provider=user)
-                print("Provider Service:", provider_service)  # Check if provider_service is retrieved correctly
                 initial_data = self.get_initial_data(provider_service)
-                print("Initial Data:", initial_data)  # Check if initial_data is correct
+                context['initial_data'] = initial_data
                 form = self.form_class(initial=initial_data)
             else:
                 print("No provider_service_id provided")
                 form = self.form_class()
             context['form'] = form
             context['category'] = ServiceCategory.objects.all()
+            if request.GET.get('error', None) is not None:
+                context['alert'] = request.GET.get('error')
+            if request.GET.get('updated', None) is not None:
+                context['alert'] = "Updated Service Successfully."
             return render(request, self.template_name, context=context)
         except Exception as e:
+            print("187----",e)
             print("Exception:", e) # Print any exceptions for debugging
-            # Handle exceptions here
-            pass
-            # return redirect('user:user_signin')
-
-        
-        # try:
-        #     user = User.objects.get(pk=request.user_id)
-        #     context['user_type'] = user.user_type.user_type
-        #     context['user'] = user
-        #     context['category'] = ServiceCategory.objects.all()
-        #     context['form'] = self.form_class()
-        # except Exception as e:
-        #     return redirect('user:user_signin')
-        # return render(request, self.template_name, context=context)
+            return redirect('user:user_signin')
+            
 
     def post(self, request, *args, **kwargs):
-        print("182-----")
+        provider_service_id = request.GET.get('provider_service_id', None)
         context = {"base_template": self.base_template, "active_header": self.active_header}
         form = self.form_class(request.POST, request.FILES)
         context['form'] = form
+        provider_service_id = request.GET.get('provider_service_id', None)
+        if provider_service_id is not None:
+            provider_service = ProviderService.objects.get(pk = provider_service_id)
+        else:
+            provider_service = None
         user = User.objects.get(pk=request.user_id)
-        print("186----", user)
-        print("186-----",form.is_valid())
         if form.is_valid():
             title = form.cleaned_data['title']
             category = form.cleaned_data['category']
@@ -241,13 +226,17 @@ class ServiceCreateView(View):
             provision = form.cleaned_data['provision']
             pincode = form.cleaned_data['pincode']
             image = request.FILES.get('image')
-            provider_service, created = ProviderService.objects.get_or_create(title = title, provider = user)
+            if provider_service:
+                pass
+            else:
+                provider_service, created = ProviderService.objects.get_or_create(title = title, provider = user)
             if provider_service.address:
                 address = provider_service.address
             else:
                 address = Address.objects.create(address_type = 'serviceprovider')
             category = ServiceCategory.objects.get(name = category)
             provider_service.category = category
+            provider_service.title = title
             provider_service.price = price
             provider_service.active = True
             provider_service.desc = description
@@ -274,8 +263,9 @@ class ServiceCreateView(View):
         else:
             print("Form is not valid")
             print("Errors:", form.errors)
+            return HttpResponseRedirect(reverse('service:service_create') + f'?provider_service_id={provider_service.id}')
 
         # Process POST request data here
-        return render(request, self.template_name, context=context)
+        return HttpResponseRedirect(reverse('service:service_create') + f'?provider_service_id={provider_service.id}&updated=true')
 
 
