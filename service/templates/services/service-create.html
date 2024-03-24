@@ -65,747 +65,520 @@
                                             <h6>Gallery</h6>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="multi-step-icon">
-                                            <span><i class="fa-solid fa-chart-bar"></i></span>
-                                        </div>
-                                        <div class="multi-step-info">
-                                            <h6>Seo</h6>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
 
                             <div class="service-inform-fieldset">
-
-                                <fieldset id="first-field">
-                                    <div class="card add-service">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="sub-title">
-                                                    <h6>Service Information</h6>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Service Title</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Service Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Category</label>
-                                                    <select class="select">
-                                                        <option>Select Category</option>
-                                                        <option>Car wash</option>
-                                                        <option>House Cleaning</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Sub Category</label>
-                                                    <select class="select">
-                                                        <option>Select Sub Category</option>
-                                                        <option>House Cleaning</option>
-                                                        <option>Car wash</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label d-block">Price<span
-                                                            class="brief-bio float-end">Set 0 for free</span></label>
-                                                    <input type="text" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label d-block">Duration</label>
-                                                    <div class="form-duration">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group mb-0">
-                                                    <label class="col-form-label">Description</label>
-                                                    <textarea class="form-control ck-editor"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card add-service">
-                                        <div class="add-service-toggle">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <fieldset id="first-field">
+                                        <div class="card add-service">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-md-12">
                                                     <div class="sub-title">
-                                                        <h6>Additional Service</h6>
+                                                        <h6>Service Information</h6>
+                                                    </div>
+                                                    {{initial_data.category}}
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Service Title</label>
+                                                        <input type="text" id="title" name="title" class="form-control"
+                                                            placeholder="Enter Service Name" value="{{ title }}">
+                                                            {% if form.title.errors %}
+                                                                    <div class="text-danger">
+                                                                        {% for error in form.title.errors %}
+                                                                            {{ error }}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <div class="status-toggle sml-status float-sm-end">
-                                                        <input type="checkbox" id="status_1" class="check" checked>
-                                                        <label for="status_1" class="checktoggle">checkbox</label>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Category</label>
+                                                        <select name="category" class="select">
+                                                            <option>Select Category</option>
+                                                            {% for cat in category %}
+                                                                <option>{{ cat.name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        {% if form.category.errors %}
+                                                            <div class="text-danger">
+                                                                {% for error in form.category.errors %}
+                                                                    {{ error }}
+                                                                {% endfor %}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class=from-icon> 
+                                                                <label class="col-form-label d-block">Price (Per Hour) $<span
+                                                                class="brief-bio float-end">Set 0$ for free</span></label>
+                                                            <input type="number" name="price" class="form-control" min="0.0" step="1.10" value="0.0">
+                                                            {% if form.price.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.price.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12">
+                                                    <div class="form-group mb-0">
+                                                        <label class="col-form-label">Description</label>
+                                                        <textarea class="form-control ck-editor" name="description"></textarea>
+                                                        {% if form.description.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.description.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="addservice-info">
-                                            <div class="row service-cont">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label">Additional Service</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Enter Service Item">
+                                        
+                                        
+                                        
+                                        <div class="card add-service">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="sub-title">
+                                                        <h6>Availability</h6>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label">Price</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Enter Price">
+                                                <div class="col-md-12">
+                                                    <div class="timeslot-sec availablt-time-slots">
+                                                        <label class="col-form-label">Configure Time Slots</label>
+                                                        <div class="tab-content pt-0">
+                                                            
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Monday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="monday_from_time" placeholder="From" oninput="validatemondayTime()">
+                                                                                        {% if form.monday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.monday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="monday_to_time" placeholder="To" oninput="validatemondayTime()">
+                                                                                        {% if form.monday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.monday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Tuesday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="tuesday_from_time" placeholder="From" oninput="validatetuesdayTime()">
+                                                                                        {% if form.tuesday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.tuesday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="tuesday_to_time" placeholder="To" oninput="validatetuesdayTime()">
+                                                                                        {% if form.tuesday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.tuesday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Wednesday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="wednesday_from_time" placeholder="From" oninput="validatewedTime()">
+                                                                                        {% if form.wednesday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.wednesday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="wednesday_to_time" placeholder="To" oninput="validatewedTime()">
+                                                                                        {% if form.wednesday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.wednesday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Thursday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="thursday_from_time" placeholder="From" oninput="validatethursTime()">
+                                                                                        {% if form.thursday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.thursday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="thursday_to_time" placeholder="To" oninput="validatethursTime()">
+                                                                                        {% if form.thursday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.thursday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Friday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="friday_from_time" placeholder="From" oninput="validatefridayTime()">
+                                                                                        {% if form.friday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.friday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="friday_to_time" placeholder="To" oninput="validatefridayTime()">
+                                                                                        {% if form.friday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.friday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Saturday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="saturday_from_time" placeholder="From" oninput="validatesaturTime()">
+                                                                                        {% if form.saturday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.saturday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control timepicker"
+                                                                                        name="saturday_to_time" placeholder="To" oninput="validatesaturTime()">
+                                                                                        {% if form.saturday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.saturday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tab-pane active" id="slot_monday">
+                                                                <div class="hours-info">
+                                                                    <h4 class="nameof-day">Sunday</h4>
+                                                                    <div class="row hours-cont">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="sunday_from_time" placeholder="From" oninput="validatesunTime()">
+                                                                                        {% if form.sunday_from_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.sunday_from_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="form-icon">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        name="sunday_to_time" placeholder="From" oninput="validatesunTime()">
+                                                                                        {% if form.sunday_to_time.errors %}
+                                                                                            <div class="text-danger">
+                                                                                                {% for error in form.sunday_to_time.errors %}
+                                                                                                    {{ error }}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label">Duration</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Enter Service Duration">
-                                                    </div>
+
                                                 </div>
                                             </div>
-                                        </div>
-                                        <a href="#" class="add-text add-extra"><i class="feather-plus-circle"></i> Add
-                                            Additional Service</a>
-                                    </div>
-                                    <div class="card add-service">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="sub-title">
-                                                    <h6>Video</h6>
+                                        </div>                        
+                                        <div class="card add-service">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="sub-title">
+                                                        <h6>Location</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Address 1</label>
+                                                        <input type="text" class="form-control"
+                                                            name="add1" placeholder="Enter Your Address 1">
+                                                            {% if form.add1.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.add1.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Address 2</label>
+                                                        <input type="text" class="form-control"
+                                                            name="add2" placeholder="Enter Your Address 2">
+                                                            {% if form.add2.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.add2.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">City</label>
+                                                        <input type="text" class="form-control"
+                                                            name="city" placeholder="Enter Your City">
+                                                            {% if form.city.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.city.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Provision</label>
+                                                        <input type="text" class="form-control"
+                                                            name="provision" placeholder="Enter Your State">
+                                                            {% if form.provision.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.provision.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Country</label>
+                                                        <input type="text" class="form-control" name="country" placeholder="Enter Country">
+                                                        {% if form.country.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.country.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Pincode</label>
+                                                        <input type="text" class="form-control"
+                                                            name="pincode" placeholder="Enter Your Pincode">
+                                                            {% if form.pincode.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.pincode.errors %}
+                                                                        {{ error }}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                    </div>
                                                 </div>
                                                 <div class="form-group mb-0">
-                                                    <label class="col-form-label">Video Link</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="https://www.youtube.com/shorts/Lf-Z7H8bZ8o">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="field-bottom-btns">
-
-                                                <div class="field-btns">
-                                                    <button class="btn btn-primary next_btn" type="button">Next <i
-                                                            class="fa-solid fa-arrow-right"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-
-                                <fieldset>
-                                    <div class="card add-service">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="sub-title">
-                                                    <h6>Availability</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-
-                                                <div class="timeslot-sec availablt-time-slots">
-
-                                                    <label class="col-form-label">Configure Time Slots</label>
-                                                    <div class="schedule-nav">
-                                                        <ul class="nav">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link active" data-bs-toggle="tab"
-                                                                    href="#all_days">All Days</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_monday">Monday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_tuesday">Tuesday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_wednesday">Wednesday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_thursday">Thursday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_friday">Friday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_saturday">Saturday</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-bs-toggle="tab"
-                                                                    href="#slot_sunday">Sunday</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-
-                                                    <div class="tab-content pt-0">
-                                                        <div class="tab-pane active" id="all_days">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">All Days</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_monday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Monday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_tuesday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Tuesday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_wednesday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Wednesday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_thursday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Thursday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_friday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Friday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_saturday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Saturday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="slot_sunday">
-                                                            <div class="hours-info">
-                                                                <h4 class="nameof-day">Sunday</h4>
-                                                                <div class="row hours-cont">
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">From</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label class="col-form-label">To</label>
-                                                                            <div class="form-icon">
-                                                                                <input type="text"
-                                                                                    class="form-control timepicker"
-                                                                                    placeholder="Select Time">
-                                                                                <span class="cus-icon"><i
-                                                                                        class="feather-clock"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group ">
-                                                                            <label class="col-form-label">Slots</label>
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Enter Slot">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a href="#" class="add-text add-hours"><i
-                                                                    class="feather-plus-circle"></i> Add More</a>
-                                                        </div>
+                                                    <div class="map-grid">
+                                                        <iframe
+                                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6509170.989457427!2d-123.80081967108484!3d37.192957227641294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb9fe5f285e3d%3A0x8b5109a227086f55!2sCalifornia%2C%20USA!5e0!3m2!1sen!2sin!4v1669181581381!5m2!1sen!2sin"
+                                                            allowfullscreen aria-hidden="false" tabindex="0"
+                                                            class="contact-map"></iframe>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="card add-service">
+                                            <div class="sub-title">
+                                                <h6>Gallery</h6>
+                                            </div>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="field-bottom-btns">
-                                                <div class="field-btns">
-                                                    <button class="btn btn-primary prev_btn" type="button"><i
-                                                            class="fa-solid fa-arrow-left"></i>Prev</button>
-                                                </div>
-                                                <div class="field-btns">
-                                                    <button class="btn btn-primary next_btn" type="button">Next <i
-                                                            class="fa-solid fa-arrow-right"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-
-                                <fieldset>
-                                    <div class="card add-service">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="sub-title">
-                                                    <h6>Location</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Address</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Your Address">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Country</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Country">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">City</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Your City">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">State</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Your State">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Pincode</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Your Pincode">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Google Maps Place ID</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Maps Place ID">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Latitude</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Latitude Number">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Longitude</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Enter Longitude Number">
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-0">
-                                                <div class="map-grid">
-                                                    <iframe
-                                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6509170.989457427!2d-123.80081967108484!3d37.192957227641294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb9fe5f285e3d%3A0x8b5109a227086f55!2sCalifornia%2C%20USA!5e0!3m2!1sen!2sin!4v1669181581381!5m2!1sen!2sin"
-                                                        allowfullscreen aria-hidden="false" tabindex="0"
-                                                        class="contact-map"></iframe>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="field-bottom-btns">
-                                                <div class="field-btns">
-                                                    <button class="btn btn-primary prev_btn" type="button"><i
-                                                            class="fa-solid fa-arrow-left"></i>Prev</button>
-                                                </div>
-                                                <div class="field-btns">
-                                                    <button class="btn btn-primary next_btn" type="button">Next <i
-                                                            class="fa-solid fa-arrow-right"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-
-                                <fieldset>
-                                    <div class="card add-service">
-                                        <div class="sub-title">
-                                            <h6>Gallery</h6>
-                                        </div>
-                                        <div class="file-upload">
-                                            <img src="assets/img/icons/upload-icon.svg" alt="image">
-                                            <h6>Drag & drop files or <span>Browse</span></h6>
-                                            <p>Supported formates: JPEG, PNG</p>
-                                            <input type="file" accept="video/image">
-                                        </div>
-                                        <div class="file-preview">
-                                            <label>Select Default Image</label>
-                                            <ul class="gallery-selected-img">
-                                                <li>
-                                                    <div class="img-preview">
-                                                        <img src="assets/img/services/service-01.jpg"
-                                                            alt="Service Image">
-                                                        <a href="javascript:void(0);" class="remove-gallery"><i
-                                                                class="feather-trash-2"></i></a>
+                                           
+                                            <div class="file-upload">
+                                                <img id="imagePreview" src="{% static 'assets/img/icons/upload-icon.svg' %}" alt="image">
+                                                <h6>Drag & drop files or <span>Browse</span></h6>
+                                                <p>Supported only Image Formats</p>
+                                                <input type="file" id="fileInput" name="image" accept="image/*" onchange="displayImage()">
+                                                {% if form.image.errors %}
+                                                    <div class="text-danger">
+                                                        {% for error in form.image.errors %}
+                                                            {{ error }}
+                                                        {% endfor %}
                                                     </div>
-                                                    <label class="custom_check">
-                                                        <input type="radio" name="gallery" checked>
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <div class="img-preview">
-                                                        <img src="assets/img/services/service-02.jpg" alt="Service">
-                                                        <a href="javascript:void(0);" class="remove-gallery"><i
-                                                                class="feather-trash-2"></i></a>
-                                                    </div>
-                                                    <label class="custom_check">
-                                                        <input type="radio" name="gallery">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <div class="img-preview">
-                                                        <img src="assets/img/services/service-03.jpg"
-                                                            alt="Service Image">
-                                                        <a href="javascript:void(0);" class="remove-gallery"><i
-                                                                class="feather-trash-2"></i></a>
-                                                    </div>
-                                                    <label class="custom_check">
-                                                        <input type="radio" name="gallery">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <div class="img-preview">
-                                                        <img src="assets/img/services/service-04.jpg"
-                                                            class="img-fluid thumbnail" alt="image">
-                                                        <a href="javascript:void(0);" class="remove-gallery"><i
-                                                                class="feather-trash-2"></i></a>
-                                                    </div>
-                                                    <label class="custom_check">
-                                                        <input type="radio" name="gallery">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="field-bottom-btns">
-                                        <div class="field-btns">
-                                            <button class="btn btn-primary prev_btn" type="button"><i
-                                                    class="fa-solid fa-arrow-left"></i>Prev</button>
-                                        </div>
-                                        <div class="field-btns">
-                                            <button class="btn btn-primary next_btn" type="button">Next <i
-                                                    class="fa-solid fa-arrow-right"></i></button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-
-                                <fieldset>
-                                    <div class="card add-service">
-                                        <div class="sub-title">
-                                            <h6>SEO</h6>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Meta Title</label>
-                                                    <input type="text" class="form-control">
-                                                </div>
+                                                {% endif %}
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Meta Keywords</label>
-                                                    <input type="text" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group mb-0">
-                                                    <label class="col-form-label">Meta Description</label>
-                                                    <textarea class="form-control" rows="5"></textarea>
-                                                </div>
-                                            </div>
+                                           
                                         </div>
-                                    </div>
-                                    <div class="field-bottom-btns">
-                                        <div class="field-btns">
-                                            <button class="btn btn-primary prev_btn" type="button"><i
-                                                    class="fa-solid fa-arrow-left"></i>Prev</button>
+                                         <div class="acc-submit">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
-                                        <div class="field-btns">
-                                            <a href="provider-services.html" class="btn btn-primary done_btn"
-                                                data-bs-toggle="modal" data-bs-target="#successmodal">Next<i
-                                                    class="fa-solid fa-arrow-right"></i></a>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
+                                    </fieldset>
+                                </form>
                             </div>
                         </div>
                     </div>

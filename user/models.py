@@ -80,8 +80,6 @@ class Address(models.Model):
     provision = models.CharField(max_length=50, null=False, blank=False)
     country = models.CharField(max_length=50, null=False, blank=False)
     postal_code = models.CharField(max_length=20, null=False, blank=False)
-    latitude = models.CharField(max_length=20, null=False, blank=False)
-    longitude = models.CharField(max_length=20, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -197,15 +195,7 @@ class EmailVerification(models.Model):
         return valid
 
 from service.models import ServiceBooking
-class Feedback(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    feedback = models.TextField(null=False, blank=False)
-    service = models.ForeignKey(ServiceBooking, on_delete=models.CASCADE, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return str(self.user.username)
 
 class ProviderGetInTouch(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_contacts', null=False, blank=False)

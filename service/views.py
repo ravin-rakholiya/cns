@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect
 from django.views import View
 from service.models import *
 from django.shortcuts import render, redirect
-from service.forms import ServicePostForm
+from service.forms import *
 from user.models import *
 from service.forms import *
+from service.scripts import *
 
 def service_booking(request):
     context = {"base_template":"base.html",
@@ -131,15 +132,150 @@ class ServiceListView(View):
         else:
             return render(request, self.template_name, context=context)
 
+class ServiceCreateView(View):
+    template_name = 'services/service-create.html'
+    base_template = 'base.html'
+    active_header = 'providers'
+    form_class = ServiceCreateForm
 
+    def get_initial_data(self, provider_service=None):
+        initial_data = {}
+        if provider_service:
+            initial_data = {
+                'title': provider_service.title,
+                'category': provider_service.category.name,
+                'price': provider_service.price,
+                'description': provider_service.desc,
+                'monday_from_time': '08:00',
+                'monday_to_time': '18:00',
+                'tuesday_from_time': '09:00',
+                'tuesday_to_time': '17:00',
+                'wednesday_from_time': '08:30',
+                'wednesday_to_time': '17:30',
+                'thursday_from_time': '08:00',
+                'thursday_to_time': '16:00',
+                'friday_from_time': '10:00',
+                'friday_to_time': '18:00',
+                'saturday_from_time': '09:00',
+                'saturday_to_time': '17:00',
+                'sunday_from_time': '10:30',
+                'sunday_to_time': '16:30',
+                'add1': '123 Sample Street',
+                'add2': 'Apt 101',
+                'country': 'Sample Country',
+                'city': 'Sample City',
+                'provision': 'Sample State',
+                'pincode': '12345',
+                # 'profile_picture_upload': user.profile_picture_upload
+            }
+        return initial_data
 
-def service_create(request):
-    context = {"base_template":"base.html", "active_header":"providers"}
-    try:
+    def get(self, request, *args, **kwargs):
+        context = {"base_template": self.base_template, "active_header": self.active_header}
+        provider_service_id = request.GET.get('provider_service_id', None)
+        print("Provider Service ID:", provider_service_id)  # Check if provider_service_id is retrieved correctly
+        try:
+            user = User.objects.get(pk=request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+            if provider_service_id is not None:
+                provider_service = ProviderService.objects.get(pk=provider_service_id, provider=user)
+                print("Provider Service:", provider_service)  # Check if provider_service is retrieved correctly
+                initial_data = self.get_initial_data(provider_service)
+                print("Initial Data:", initial_data)  # Check if initial_data is correct
+                form = self.form_class(initial=initial_data)
+            else:
+                print("No provider_service_id provided")
+                form = self.form_class()
+            context['form'] = form
+            context['category'] = ServiceCategory.objects.all()
+            return render(request, self.template_name, context=context)
+        except Exception as e:
+            print("Exception:", e) # Print any exceptions for debugging
+            # Handle exceptions here
+            pass
+            # return redirect('user:user_signin')
+
+        
+        # try:
+        #     user = User.objects.get(pk=request.user_id)
+        #     context['user_type'] = user.user_type.user_type
+        #     context['user'] = user
+        #     context['category'] = ServiceCategory.objects.all()
+        #     context['form'] = self.form_class()
+        # except Exception as e:
+        #     return redirect('user:user_signin')
+        # return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        print("182-----")
+        context = {"base_template": self.base_template, "active_header": self.active_header}
+        form = self.form_class(request.POST, request.FILES)
+        context['form'] = form
         user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'services/service-create.html', context=context)
+        print("186----", user)
+        print("186-----",form.is_valid())
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            category = form.cleaned_data['category']
+            price = form.cleaned_data['price']
+            description = form.cleaned_data['description']
+            monday_from_time = form.cleaned_data['monday_from_time']
+            monday_to_time = form.cleaned_data['monday_to_time']
+            tuesday_from_time = form.cleaned_data['tuesday_from_time']
+            tuesday_to_time = form.cleaned_data['tuesday_to_time']
+            wednesday_from_time = form.cleaned_data['wednesday_from_time']
+            wednesday_to_time = form.cleaned_data['wednesday_to_time']
+            thursday_from_time = form.cleaned_data['thursday_from_time']
+            thursday_to_time = form.cleaned_data['thursday_to_time']
+            friday_from_time = form.cleaned_data['friday_from_time']
+            friday_to_time = form.cleaned_data['friday_to_time']
+            saturday_from_time = form.cleaned_data['saturday_from_time']
+            saturday_to_time = form.cleaned_data['saturday_to_time']
+            sunday_from_time = form.cleaned_data['sunday_from_time']
+            sunday_to_time = form.cleaned_data['sunday_to_time']
+            add1 = form.cleaned_data['add1']
+            add2 = form.cleaned_data['add2']
+            country = form.cleaned_data['country']
+            city = form.cleaned_data['city']
+            provision = form.cleaned_data['provision']
+            pincode = form.cleaned_data['pincode']
+            image = request.FILES.get('image')
+            provider_service, created = ProviderService.objects.get_or_create(title = title, provider = user)
+            if provider_service.address:
+                address = provider_service.address
+            else:
+                address = Address.objects.create(address_type = 'serviceprovider')
+            category = ServiceCategory.objects.get(name = category)
+            provider_service.category = category
+            provider_service.price = price
+            provider_service.active = True
+            provider_service.desc = description
+            provider_service.address = address
+            if image:
+                provider_service.picture = image
+            provider_service.save()
+            monday_avail, created = create_or_update_availability(provider_service, "Monday", True, monday_from_time, monday_to_time)
+            tuesday_avail, created = create_or_update_availability(provider_service, "Tuesday", True, tuesday_from_time, tuesday_to_time)
+            wed_avail, created = create_or_update_availability(provider_service, "Wednesday", True, wednesday_from_time, wednesday_to_time)
+            thurs_avail, created = create_or_update_availability(provider_service, "Thursday", True, thursday_from_time, thursday_to_time)
+            friday_avail, created = create_or_update_availability(provider_service, "Friday", True, friday_from_time, friday_to_time)
+            saturday_avail, created = create_or_update_availability(provider_service, "Saturday", True, saturday_from_time, saturday_to_time)
+            sunday_avail, created = create_or_update_availability(provider_service, "Sunday", True, sunday_from_time, sunday_to_time)
+            
+            
+            address.add1 = add1
+            address.add2 = add2
+            address.city = city
+            address.provision = provision
+            address.country = country
+            address.postal_code = pincode
+            address.save()
+        else:
+            print("Form is not valid")
+            print("Errors:", form.errors)
+
+        # Process POST request data here
+        return render(request, self.template_name, context=context)
+
 

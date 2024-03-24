@@ -136,7 +136,11 @@
                       </div>
                     </div>
                   </div>
+                  {% if user.user_type.user_type == "provider" %}
+                    <a href="http://127.0.0.1:8000/service/service-create?provider_service_id={{provider_service.id}}" class="btn btn-primary">Edit Service<i class="feather-arrow-right-circle ms-1"></i></a>
+                  {% else %}
                     <a href="http://127.0.0.1:8000/service/service-booking" class="btn btn-primary">Book Service<i class="feather-arrow-right-circle ms-1"></i></a>
+                  {% endif %}
                 </div>
               </div>
             </div>

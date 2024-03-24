@@ -13,7 +13,6 @@
 
 	<script src="{% static 'assets/plugins/intltelinput/js/intlTelInput.js' %}" type="f60d87706a81bb5f75d11f1e-text/javascript"></script>
 <script>
-    // Function to show the toast
     function showToast() {
         var toast = document.getElementById('myToast');
         toast.classList.add('show');
@@ -21,14 +20,11 @@
             toast.classList.remove('show');
         }, 2000);  // 5000 milliseconds = 5 seconds
     }
-
-    // Function to hide the toast when the close button is clicked
     function hideToast() {
         var toast = document.getElementById('myToast');
         toast.classList.remove('show');
     }
 
-    // Show the toast when the page loads
     window.onload = function () {
         showToast();
     };
@@ -55,5 +51,104 @@
       } else {
         x.type = "password";
       }
+    }
+        function validatealldaysTime() {
+        var fromTimeInput = document.querySelector('input[name="all_days_from_time"]');
+        var toTimeInput = document.querySelector('input[name="all_days_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatemondayTime() {
+        var fromTimeInput = document.querySelector('input[name="monday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="monday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatetuesdayTime() {
+        var fromTimeInput = document.querySelector('input[name="tuesday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="tuesday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatewedTime() {
+        var fromTimeInput = document.querySelector('input[name="wednesday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="wednesday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatethursTime() {
+        var fromTimeInput = document.querySelector('input[name="thursday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="thursday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatefridayTime() {
+        var fromTimeInput = document.querySelector('input[name="friday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="friday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatesaturTime() {
+        var fromTimeInput = document.querySelector('input[name="saturday_from_time"]');
+        var toTimeInput = document.querySelector('input[name="saturday_to_time"]');
+        
+        if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+            alert("To Time must be later than From Time.");
+            toTimeInput.value = "";
+        }
+    }
+    function validatesunTime() {
+            var fromTimeInput = document.querySelector('input[name="sunday_from_time"]');
+            var toTimeInput = document.querySelector('input[name="sunday_to_time"]');
+            
+            if (fromTimeInput.value && toTimeInput.value && fromTimeInput.value >= toTimeInput.value) {
+                alert("To Time must be later than From Time.");
+                toTimeInput.value = "";
+            }
+        }
+    function displayFileName() {
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    }
+    function displayImage() {
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.src = '{% static "assets/img/icons/upload-icon.svg" %}';
+        }
     }
 </script>

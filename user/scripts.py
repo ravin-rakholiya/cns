@@ -17,3 +17,4 @@ def generate_string(n):
 	for i in range(n):
 	    result += str(i)
 	return result
+

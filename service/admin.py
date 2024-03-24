@@ -117,3 +117,20 @@ class ServiceRatingAdmin(admin.ModelAdmin):
         return False
 
 admin.site.register(ServiceRating, ServiceRatingAdmin)
+
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'service','created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at')
+    search_fields = ('user__username', 'feedback')
+    readonly_fields = ('id', 'created_at', 'updated_at')
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'service','feedback')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+admin.site.register(Feedback, FeedbackAdmin)
+

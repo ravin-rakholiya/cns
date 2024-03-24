@@ -5,7 +5,7 @@ from service.views import *
 app_name = 'service'
 
 urlpatterns = [
-    path('service-create', service_create, name='service_create'),
+    path('service-create', ServiceCreateView.as_view(), name='service_create'),
     path('service-detail/<int:provider_service>', ServiceDetailView.as_view(), name='service_detail'),
     path('service-booking', service_booking, name='service_booking'),
     path('service-payment', service_payment, name='service_payment'),

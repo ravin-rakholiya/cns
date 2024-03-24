@@ -139,7 +139,6 @@ class ProviderSignupView(View):
             verification_link = generate_user_account_verification_link(verification_token, "user/verify-mail?token=")
             EmailVerification.objects.get_or_create(email_to = user, verification_token = verification_token)
             send_account_verification_mail("Verify your email to create your USH Account",first_name, verification_link, email)
-            # Redirect to a success page or return a success message
             context['success_message'] = "Signup successful!"
             context['user'] = user
             return HttpResponseRedirect(reverse('user:verify_email'))  # Redirect to the index page
@@ -214,7 +213,6 @@ class UserSignupView(View):
         form = self.form_class(request.POST)
         context = {'base_template': self.base_template, 'form': form}
         if form.is_valid():
-            # Process form data and redirect after successful form submission
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
@@ -262,7 +260,6 @@ class UserSigninView(View):
         form = self.form_class(request.POST)
         context = {'base_template': self.base_template, 'form': form}
         if form.is_valid():
-            # Process form data and redirect after successful form submission
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             remember_me = form.cleaned_data['remember_me']
@@ -318,7 +315,7 @@ class CustomerProfileView(View):
             'city': user.address.city if user.address is not None else '',
             'postal_code': user.address.postal_code if user.address is not None else '',
             'currency_code': user.currency_code,
-            # 'profile_picture_upload': user.profile_picture_upload,  # Uncomment if you have this field in your model
+            # 'profile_picture_upload': user.profile_picture_upload
         }
         return initial_data
 
@@ -383,10 +380,9 @@ class CustomerProfileView(View):
             address.city = city
             address.postal_code = postal_code
             address.save()
-            # Process the form data here if needed
             context['message'] = 'Information Updated Successfully.'
             context['user'] = user
-            return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
+            return render(request, self.template_name, context=context)
         return render(request, self.template_name, context=context)
 
 
@@ -415,7 +411,7 @@ class ProviderProfileView(View):
             'city': user.address.city if user.address is not None else '',
             'postal_code': user.address.postal_code if user.address is not None else '',
             'currency_code': user.currency_code,
-            # 'profile_picture_upload': user.profile_picture_upload,  # Uncomment if you have this field in your model
+            # 'profile_picture_upload': user.profile_picture_upload,
         }
         return initial_data
 
@@ -432,7 +428,7 @@ class ProviderProfileView(View):
             return render(request, 'login/login.html', context=context)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         context = {"base_template":"base.html",  "active_menu": "settings","user_name": "John Smith1","member_since": "Sep 2021",'user_type':user.user_type.user_type, "active_header":"customers", "form":form}
         if form.is_valid():
             first_name = form.cleaned_data["first_name"]
@@ -447,7 +443,8 @@ class ProviderProfileView(View):
             city = form.cleaned_data["city"]
             postal_code = form.cleaned_data["postal_code"]
             currency_code = form.cleaned_data["currency_code"]
-            profile_picture_upload = form.cleaned_data["profile_picture_upload"]
+            profile_picture = request.FILES.get('profile_picture_upload')
+            
             user = User.objects.get(pk=self.request.user_id)
             user.first_name = first_name
             user.last_name = last_name
@@ -455,6 +452,8 @@ class ProviderProfileView(View):
             user.gender = gender
             user.bio = bio
             user.currency_code = currency_code
+            if profile_picture:
+                user.avatar = profile_picture
             user.save()
             address = user.address
             address.add1 = add1
@@ -464,10 +463,9 @@ class ProviderProfileView(View):
             address.city = city
             address.postal_code = postal_code
             address.save()
-            # Process the form data here if needed
             context['message'] = 'Information Updated Successfully.'
             context['user'] = user
-            return render(request, self.template_name, context=context)  # Replace 'success_url' with your actual success URL
+            return render(request, self.template_name, context=context)
         return render(request, self.template_name, context=context)
 
 class ForgotPasswordView(View):
@@ -492,7 +490,7 @@ class ForgotPasswordView(View):
             # Redirect to a success page or return a success message
             context['success_message'] = "Verify your Email to Reset the Passowrd!"
             context["alert"] = "Verify your Email to Reset the Passowrd!"
-            return redirect('user:user_signin')  # Adjust the URL name as needed
+            return redirect('user:user_signin')
         return render(request, self.template_name, context=context)
 
 
@@ -646,7 +644,7 @@ class ProviderDetailsView(View):
         return render(request, self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = ProviderContactForm(request.POST)  # Assuming ContactForm is used for the contact form
+        form = ProviderContactForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
@@ -713,12 +711,10 @@ class CustomerBookingView(View):
             comment = form.cleaned_data['comment']
             context['provider_id'] = ""
             rating = ServiceRating.objects.get_or_create(user=user, service = service_booking, rate=float(rating), comment=comment)
-            # Redirect to a success URL after form submission
-            return HttpResponseRedirect(reverse('user:customer_booking'))  # Replace 'success_url' with your actual success URL
+            return HttpResponseRedirect(reverse('user:customer_booking'))
 
-        # If form is not valid, render the form again with validation errors
         context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
-        context['review_form'] = form  # Pass the form instance with validation errors to the template
+        context['review_form'] = form 
         return render(request, self.template_name, context=context)
 
 
