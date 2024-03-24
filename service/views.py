@@ -89,6 +89,7 @@ class ServiceListView(View):
                     service_ratings_data[service.id] = round(total_ratings/service_ratings_length,1)
             context['provider_services'] = provider_services
             context['user'] = user
+            context['user'] = user
             context['service_ratings'] = service_ratings_data
             context['form'] = self.form_class()
         except Exception as e:
@@ -107,9 +108,9 @@ class ServiceListView(View):
             context['user_type'] = user.user_type.user_type
             if search_input != '':
                 if user.user_type.user_type == 'provider':
-                    provider_services = ProviderService.objects.filter(provider = user, title__contains = search_input)
+                    provider_services = ProviderService.objects.filter(provider = user, title__icontains = search_input)
                 else:
-                    provider_services = ProviderService.objects.filter(title__contains = search_input)
+                    provider_services = ProviderService.objects.filter(title__icontains = search_input)
             else:
                 provider_services = ProviderService.objects.filter(provider = user)
             service_ratings_data = {}
@@ -163,7 +164,6 @@ class ServiceCreateView(View):
     def get(self, request, *args, **kwargs):
         context = {"base_template": self.base_template, "active_header": self.active_header}
         provider_service_id = request.GET.get('provider_service_id', None)
-        print("Provider Service ID:", provider_service_id)  # Check if provider_service_id is retrieved correctly
         try:
             user = User.objects.get(pk=request.user_id)
             context['user_type'] = user.user_type.user_type
@@ -251,8 +251,7 @@ class ServiceCreateView(View):
             friday_avail, created = create_or_update_availability(provider_service, "Friday", True, friday_from_time, friday_to_time)
             saturday_avail, created = create_or_update_availability(provider_service, "Saturday", True, saturday_from_time, saturday_to_time)
             sunday_avail, created = create_or_update_availability(provider_service, "Sunday", True, sunday_from_time, sunday_to_time)
-            
-            
+        
             address.add1 = add1
             address.add2 = add2
             address.city = city

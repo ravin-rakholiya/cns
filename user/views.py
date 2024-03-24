@@ -619,8 +619,8 @@ class ProviderDetailsView(View):
     form = ProviderContactForm
 
     def get(self, request, *args, **kwargs):
-        context = {"base_template": self.base_template, "active_header": "providers", "provider_id": kwargs['provider_id']}
         try:
+            context = {"base_template": self.base_template, "active_header": "providers", "provider_id": kwargs['provider_id']}
             user = User.objects.get(pk=request.user_id)
             context['user_type'] = user.user_type.user_type
             try:
