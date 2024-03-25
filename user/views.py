@@ -74,8 +74,11 @@ class DashboardView(View):
                 user = User.objects.get(pk=request.user_id)
                 context['user_type'] = user.user_type.user_type
                 context['user'] = user
+                if user.user_type.user_type=="provider":
+                    return HttpResponseRedirect(reverse('user:provider_booking'))
+                return HttpResponseRedirect(reverse('user:customer_booking'))
             except Exception as e:
-                print("78---",e)
+                return HttpResponseRedirect(reverse('user:user_signin'))
             return render(request, self.template_name, context=context)
         except Exception as e:
             context = {'base_template': self.base_template}

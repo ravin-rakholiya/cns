@@ -119,7 +119,12 @@
                       
                     </div>
                     <div class="serv-proimg">
-                        <img src="{{user.avatar.url}}" alt="image">
+                        {% if user.avatr %}
+                                                                <img src="{{user.avatar.url}}"
+                                                                    alt="user">
+                                                                {% else %}
+                                                                <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                                                                {% endif %}
                       <span><i class="fa-solid fa-circle-check"></i></span>
                     </div>
                   </div>

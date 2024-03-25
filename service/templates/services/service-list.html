@@ -87,10 +87,14 @@
                                                                 {{provider_service.address.provision}},
                                                                 {{provider_service.address.country}}</p>
                                                             <div class="service-pro-img">
+                                                                {% if user.avatr %}
                                                                 <img src="{{user.avatar.url}}"
                                                                     alt="user">
-                                                               
+                                                                {% else %}
+                                                                <img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="user">
+                                                                {% endif %}
                                                                  <span><i class="fas fa-star filled"></i>{{service_ratings|get_by_key:provider_service.id}}</span>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
