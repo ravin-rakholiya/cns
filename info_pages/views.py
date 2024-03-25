@@ -31,13 +31,20 @@ class ContactUsView(View):
     base_template = 'base.html'
 
     def get(self, request, *args, **kwargs):
-        context = {"base_template":self.base_template, "active_header":"about"}
+        context = {"base_template":self.base_template, "active_header":"contactus"}
         form = ContactUsForm()
         context['form'] = form
+        try:
+            user_id = request.user_id
+            user = User.objects.get(pk = user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+        except Exception as e:
+            pass
         return render(request, self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
-        context = {"base_template":self.base_template, "active_header":"about"}
+        context = {"base_template":self.base_template, "active_header":"contactus"}
         form = ContactUsForm(request.POST)
         if form.is_valid():
             form.save()
