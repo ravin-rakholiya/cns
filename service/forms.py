@@ -41,3 +41,6 @@ class ServiceBookingForm(forms.Form):
     pincode = forms.CharField(label='Pincode', max_length=10, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Pincode'}))
     appointment = forms.CharField(label='Category', widget=forms.Select(attrs={'class': 'select'}))
    
+class FeedbackForm(forms.Form):
+    feedback = forms.CharField(label='Add Feedback', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Feedback'}))
+    
