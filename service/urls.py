@@ -11,4 +11,5 @@ urlpatterns = [
     path('service-payment', service_payment, name='service_payment'),
     path('service-booking-done', ServiceBookingDoneView.as_view(), name='service_boooking_done'),
     path('service-list', ServiceListView.as_view(), name='service_list'),
+    path('feedback', FeedbackCreateView.as_view(), name='feedback'),
 ]
