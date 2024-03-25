@@ -78,7 +78,7 @@ class DashboardView(View):
                     return HttpResponseRedirect(reverse('user:provider_booking'))
                 return HttpResponseRedirect(reverse('user:customer_booking'))
             except Exception as e:
-                return HttpResponseRedirect(reverse('user:user_signin'))
+                pass
             return render(request, self.template_name, context=context)
         except Exception as e:
             context = {'base_template': self.base_template}
@@ -265,7 +265,6 @@ class UserSigninView(View):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            remember_me = form.cleaned_data['remember_me']
             email = email.lower()
             user = User.objects.filter(email=email).first()
             if user:
@@ -285,7 +284,7 @@ class UserSigninView(View):
                     return HttpResponseRedirect(reverse('user:provider_booking'))
                 return HttpResponseRedirect(reverse('user:customer_booking'))
             else:
-                context = {"base_template": "base.html", "form": form, "alert":"User does not exist with this credentials."}
+                context = {"base_template": "base.html", "form": form, "alert":"Credentials does not match."}
                 context['user'] = user
                 return render(request, self.template_name, context=context)
         else:
@@ -337,6 +336,8 @@ class CustomerProfileView(View):
                 "form": form,
             }
             context['user'] = user
+            visits = UserSystemVisit.objects.last()
+            context['today_visits'] = visits.daily_count
             return render(request, self.template_name, context=context)
         except Exception as e:
             return HttpResponseRedirect(reverse('user:user_signin'))
@@ -574,6 +575,36 @@ class ProviderBookingView(View):
             return HttpResponseRedirect(reverse('user:user_signin'))
         return render(request, self.template_name, context=context)
 
+class ServiceCompleteView(View):
+    template_name = 'provider/provider-booking.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers", }
+        try:
+
+            user = get_object_or_404(User, pk=request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+            service_id = kwargs.get('service_id')
+            service = ServiceBooking.objects.get(pk=service_id)
+            service.status = "completed"
+            service.save()
+            provider_bookings = ServiceBooking.objects.filter(service__provider=user).order_by('appointment_time')
+            context['provider_bookings'] = provider_bookings
+            context['provider_id'] = user.id
+            service_ratings = {}
+            for booking in provider_bookings:
+                ratings = ServiceRating.objects.filter(service=booking)
+                if ratings:
+                    service_ratings[booking.id] = generate_string(ratings.last().rate)
+            context['service_ratings'] = service_ratings
+        except Exception as e:
+            print("602------",e)
+            context = {"base_template": 'base.html', "form": LoginForm}
+            return HttpResponseRedirect(reverse('user:user_signin'))
+        return render(request, self.template_name, context=context)
+
+
     
 
 
@@ -684,6 +715,7 @@ class CustomerBookingView(View):
 
     def post(self, request, *args, **kwargs):
         form = RatingForm(request.POST)
+        context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
         if form.is_valid():
             user_id = request.user_id
             user = User.objects.get(pk=user_id)
@@ -694,8 +726,6 @@ class CustomerBookingView(View):
             context['provider_id'] = ""
             rating = ServiceRating.objects.get_or_create(user=user, service = service_booking, rate=float(rating), comment=comment)
             return HttpResponseRedirect(reverse('user:customer_booking'))
-
-        context = {"base_template": "provider-base.html", 'active_menu': 'bookings', "active_header": "providers"}
         context['review_form'] = form 
         return render(request, self.template_name, context=context)
 

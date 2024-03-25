@@ -20,6 +20,7 @@ urlpatterns = [
     path('provider-list', ProviderListView.as_view(), name='provider_list'),
     path('provider-details/<int:provider_id>', ProviderDetailsView.as_view(), name='provider_details'),
     path('provider-profile', ProviderProfileView.as_view(), name='provider_rofile'),
+    path('service-complete/<int:service_id>', ServiceCompleteView.as_view(), name='service_complete'),
 
     # customer Routes
     path('customer-booking', CustomerBookingView.as_view(), name='customer_booking'),

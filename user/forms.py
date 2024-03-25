@@ -23,7 +23,6 @@ class UserSignupForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'johndoe@example.com'}))
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*************'}))
-    remember_me = forms.BooleanField(label='Remember Me', required=False, widget=forms.CheckboxInput(attrs={'class': 'rememberme'}))
 
 class AccountSettingsForm(forms.Form):
     first_name = forms.CharField(label='First Name', max_length=255, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your First Name', 'required': True}))

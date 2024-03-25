@@ -11,17 +11,17 @@
                   <span></span>
                </span>
             </a>
-            <a href="index.html" class="navbar-brand logo">
+            <a href="http://127.0.0.1:8000/user/user_signin" class="navbar-brand logo">
 
-               <img src="{% static 'assets/img/logo.svg' %}" class="img-fluid" alt="Logo">
+               <img src="{% static 'assets/img/logo-main2.jpeg' %}" class="img-fluid" alt="Logo">
             </a>
-            <a href="index.html" class="navbar-brand logo-small">
-               <img src="{% static 'assets/img/logo-small.png' %}" class="img-fluid" alt="Logo">
+            <a href="http://127.0.0.1:8000/user/user_signin" class="navbar-brand logo-small">
+               <img src="{% static 'assets/img/logo-color.png' %}" class="img-fluid" alt="Logo">
             </a>
          </div>
          <div class="main-menu-wrapper">
             <div class="menu-header">
-               <a href="index.html" class="menu-logo">
+               <a href="http://127.0.0.1:8000/user/user_signin" class="menu-logo">
                   <img src="{% static 'assets/img/logo.svg' %}" class="img-fluid" alt="Logo">
                </a>
                <a id="menu_close" class="menu-close" href="javascript:void(0);"> <i class="fas fa-times"></i></a>
@@ -30,10 +30,11 @@
             <ul class="main-nav">
                <li class="megamenu {% if active_header == 'home' %}active{% endif %}">
 
-               <a href="http://127.0.0.1:8000">Home</a></li>
+
 
                
                {% if user_type == 'customer' %}
+               <a href="http://127.0.0.1:8000/user/user_signin">Home</a></li>
                   <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
                      <a href="javascript:void(0);">Services <i class="fas fa-chevron-down"></i></a>
                      <ul class="submenu">
@@ -50,6 +51,7 @@
                       </ul>
                   </li>
                {% elif user_type == 'provider' %}
+               <a href="http://127.0.0.1:8000/user/user_signin">Home</a></li>
                <li class="has-submenu {% if active_header == 'providers' %}active{% endif %}">
                   <a href="javascript:void(0);">Providers <i class="fas fa-chevron-down"></i></a>
                   <ul class="submenu">
@@ -62,6 +64,7 @@
                   </ul>
                </li>
                {% else %}
+                  <a href="http://127.0.0.1:8000">Home</a></li>
                   <li class="has-submenu {% if active_header == 'services' %}active{% endif %}">
                      <a href="javascript:void(0);">Services<i class="fas fa-chevron-down"></i></a>
                      <ul class="submenu">

@@ -105,7 +105,11 @@
                                             <div class="write-review">
                                                 <div class="review-add">
                                                     <div class="rev-img">
-                                                        <img src="{{customer_booking.service.picture.url}}" alt="image">
+                                                        {% if customer_booking.service.picture %}
+                                                            <img src="{{customer_booking.service.picture.url}}" alt="image">
+                                                        {% else %}
+                                                           <img src="{% static 'assets/img/provider/provider-11.jpg' %}" alt="img">
+                                                        {% endif %}
                                                     </div>
                                                     <div class="rev-info">
                                                         <h6>{{customer_booking.service.title|capfirst}}</h6>
