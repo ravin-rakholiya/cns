@@ -55,7 +55,7 @@ class ServiceBooking(models.Model):
     service = models.ForeignKey(ProviderService, on_delete=models.CASCADE, null=False, blank=False)
     desc = models.TextField(null=True, blank=True)
     status = models.CharField(choices = BOOKING_STATUS, default = "pending", max_length=50, null=False, blank=False)
-    appointment_time = models.DateTimeField(null=False, blank=False)
+    appointment_time = models.CharField(max_length=255, null=True, blank=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=False, blank=False)
     price = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

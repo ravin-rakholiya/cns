@@ -31,3 +31,13 @@ class ServiceCreateForm(forms.Form):
     provision = forms.CharField(label='Provision', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your State'}))
     pincode = forms.CharField(label='Pincode', max_length=10, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Pincode'}))
     image = forms.ImageField(label='Image', required=False, widget=forms.FileInput(attrs={'accept': 'image/*'}))
+
+class ServiceBookingForm(forms.Form):
+    add1 = forms.CharField(label='Address 1', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Address 1'}))
+    add2 = forms.CharField(label='Address 2', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Address 2'}))
+    city = forms.CharField(label='City', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your City'}))
+    provision = forms.CharField(label='Provision', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your State'}))
+    country = forms.CharField(label='Country', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Country'}))
+    pincode = forms.CharField(label='Pincode', max_length=10, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Pincode'}))
+    appointment = forms.CharField(label='Category', widget=forms.Select(attrs={'class': 'select'}))
+   

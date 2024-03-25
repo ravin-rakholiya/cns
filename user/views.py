@@ -548,16 +548,6 @@ class ProviderServicesView(View):
             return render(request, 'login/login.html', context=context)
         return render(request, self.template_name, context=context)
 
-def provider_services(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'services', "active_header":"providers"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'provider/provider-services.html', context=context)
-
 class ProviderBookingView(View):
     template_name = 'provider/provider-booking.html'
 
@@ -582,17 +572,6 @@ class ProviderBookingView(View):
         return render(request, self.template_name, context=context)
 
     
-
-def provider_booking(request):
-    context = {"base_template":"provider-base.html", 'active_menu': 'bookings', "active_header":"providers"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        context = {"base_template": 'base.html', "form": LoginForm}
-        return HttpResponseRedirect(reverse('user:user_signin'))
-    return render(request, 'provider/provider-booking.html', context=context)
 
 
 class ProviderListView(View):

@@ -9,17 +9,60 @@ from service.forms import *
 from service.scripts import *
 from django.urls import reverse_lazy, reverse
 
-def service_booking(request):
-    context = {"base_template":"base.html",
-        "user_name": "John Smith1",
-        "member_since": "Sep 2021", "active_step":"appointment"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'services/service-booking.html', context=context)
+class ServiceBookingView(View):
+    template_name = 'services/service-booking.html'
+    base_template = 'base.html'
+    active_step = 'appointment'
+
+    def get_context_data(self):
+        context = {
+            'base_template': self.base_template,
+            'user_name': 'John Smith1',
+            'member_since': 'Sep 2021',
+            'active_step': self.active_step,
+        }
+        try:
+            user = User.objects.get(pk=self.request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+        except User.DoesNotExist:
+            return redirect('user:user_signin')
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        provider_service_id = kwargs.get('provider_service')
+        provider_service = ProviderService.objects.get(pk=provider_service_id)
+        context['provider_service'] = provider_service
+        service_availability = ProviderAvailability.objects.filter(service = provider_service)
+        context['service_availabilities'] = service_availability
+        form = ServiceBookingForm()
+        form.fields['appointment'].choices = [(str(avail.pk), f"{avail.start_time} - {avail.end_time}") for avail in service_availability]
+        context['form'] = form
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        provider_service_id = kwargs.get('provider_service')
+        appointment_time = request.POST.get('appointment')
+        provider_service = ProviderService.objects.get(pk = provider_service_id)
+        form = ServiceBookingForm(request.POST)  # Pass POST data and service_availabilities to the form
+        if form.is_valid():
+            add1 = form.cleaned_data['add1']
+            add2 = form.cleaned_data['add2']
+            city = form.cleaned_data['city']
+            provision = form.cleaned_data['provision']
+            country = form.cleaned_data['country']
+            pincode = form.cleaned_data['pincode']
+            appointment = form.cleaned_data['appointment']
+            address = Address.objects.create(add1=add1, add2=add2, city=city, provision=provision, country=country, postal_code=pincode)
+            service_booking = ServiceBooking.objects.create(user = context['user'], service=provider_service, address=address, appointment_time=appointment)
+            return HttpResponseRedirect(reverse('service:service_boooking_done'))
+        else:
+            print("Form is not valid")
+            print("Errors:", form.errors)
+        context['form'] = form  # Include the form in the context
+        return render(request, self.template_name, context=context)
 
 class ServiceDetailView(View):
     template_name = 'services/service-detail.html'
@@ -49,15 +92,29 @@ def service_payment(request):
         pass
     return render(request, 'services/service-booking-payment.html', context=context)
 
-def service_boooking_done(request):
-    context = {"base_template":"base.html", "active_step":"done", "active_header":"providers"}
-    try:
-        user = User.objects.get(pk=request.user_id)
-        context['user_type'] = user.user_type.user_type
-        context['user'] = user
-    except Exception as e:
-        pass
-    return render(request, 'services/service-booking-done.html', context=context)
+class ServiceBookingDoneView(View):
+    template_name = 'services/service-booking-done.html'
+    base_template = 'base.html'
+    active_step = 'done'
+    active_header = 'providers'
+
+    def get_context_data(self):
+        context = {
+            'base_template': self.base_template,
+            'active_step': self.active_step,
+            'active_header': self.active_header,
+        }
+        try:
+            user = User.objects.get(pk=self.request.user_id)
+            context['user_type'] = user.user_type.user_type
+            context['user'] = user
+        except User.DoesNotExist:
+            return redirect('user:user_signin')
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context=context)
 
 class ServiceListView(View):
     template_name = 'services/service-list.html'
